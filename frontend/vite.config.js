@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 // on the same address as the website, so no cross-origin setup is needed.
 export default defineConfig({
   plugins: [react()],
+  base: '/Vehicle-Rental-Management-System/',
   server: {
     port: 5173,
     proxy: {
