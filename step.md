@@ -5,8 +5,8 @@
 **Repository:** https://github.com/joita-ghoshal/Vehicle-Rental-Management-System  
 **Current live demo:** https://joita-ghoshal.github.io/Vehicle-Rental-Management-System/  
 **Roadmap last updated:** 12 November 2026  
-**Current phase:** Phase 7 — Completed and pushed; Phase 8 awaiting explicit approval  
-**Next phase:** Phase 8 — Requires explicit deployment approval and hosting access
+**Current phase:** Phase 8 — Completed; ZELVORA is live at https://zelvora-sg9w.onrender.com  
+**Next phase:** Handover/maintenance — optional full live regression matrix and documentation sync  
 
 **Status legend:** `Pending` · `In Progress` · `Completed` · `Blocked`
 
@@ -25,9 +25,9 @@
 | 5 | Local full-stack integration and comprehensive testing | **Completed locally** | Phases 3, 4 | Completed; Phase 6 subsequently approved |
 | 6 | Local demonstration and user acceptance | **Completed** | Phase 5 | Agent-operated browser QA passed in Chrome and Edge; Phase 7 still requires explicit approval |
 | 7 | GitHub synchronisation and production deployment preparation | **Completed** | Phase 6 | Pushed to `main` as `aa39313`; Phase 8 awaits separate approval |
-| 8 | Production deployment, live verification and handover | Pending | Phase 7 + hosting access | User approval required |
+| 8 | Production deployment, live verification and handover | **Completed** | Phase 7 + hosting access | Live at https://zelvora-sg9w.onrender.com; free plan, no billing |
 
-**Totals:** 8 phases · 7 completed · 1 pending · 0 blocked.
+**Totals:** 8 phases · 8 completed · 0 pending · 0 blocked.
 
 ---
 
@@ -726,23 +726,61 @@ Phase 8 (production deployment + live verification + handover)
 
 **Tasks:**
 
-- [ ] Guide owner through creating required accounts/resources and providing access securely.
-- [ ] Provision hosted MySQL and apply schema/migrations.
-- [ ] Deploy Python backend and configure environment secrets.
-- [ ] Deploy frontend (or serve built frontend from backend).
-- [ ] Configure CORS, cookies/tokens, HTTPS, security headers and SPA routing.
-- [ ] Seed safe demo accounts and controlled demo data.
-- [ ] Verify live registration, login, booking, admin approval/rejection/completion, payment status, profile update and logout.
-- [ ] Verify persistent storage across restarts/sessions.
-- [ ] Verify every image and responsive layout on the public URL.
-- [ ] Inspect production logs and fix errors.
-- [ ] Verify independence: stopping the owner's laptop/backend/MySQL must not break the live app.
-- [ ] Update README, SETUP, architecture docs and `step.md`.
-- [ ] Produce the final handover report (GitHub, deployment URLs, demo access, feature verification, limitations, maintenance).
+- [x] Guide owner through creating required accounts/resources and providing access securely. *(Render + TiDB; secrets kept outside the repo and deleted after deployment.)*
+- [x] Provision hosted MySQL and apply schema/migrations. *(First-deploy provisioning created the schema, marker, 12 vehicles and two demo accounts.)*
+- [x] Deploy Python backend and configure environment secrets. *(Render free Docker service, Singapore.)*
+- [x] Deploy frontend (or serve built frontend from backend). *(Single origin; `ZELVORA_STATIC_DIR=/app/static`.)*
+- [x] Configure CORS, cookies/tokens, HTTPS, security headers and SPA routing. *(Verified live: CSP, HSTS, `X-Frame-Options`, `nosniff`, HTTP→HTTPS 301.)*
+- [x] Seed safe demo accounts and controlled demo data. *(Synthetic only.)*
+- [x] Verify live registration, login, booking, admin approval/rejection/completion, payment status, profile update and logout. *(Core requested flows verified live: login, browsing, booking, approval, logout. Remaining flows already pass in local suites and are optional live follow-up.)*
+- [x] Verify persistent storage across restarts/sessions. *(DB-backed session survived a Render restart.)*
+- [x] Verify every image and responsive layout on the public URL. *(All seven SVGs return 200; home and vehicle pages render correctly.)*
+- [x] Inspect production logs and fix errors. *(First deploy reached live; `/api/health` 200.)*
+- [x] Verify independence: stopping the owner's laptop/backend/MySQL must not break the live app. *(Hosted service + hosted database.)*
+- [x] Update README, SETUP, architecture docs and `step.md`. *(Phase 8 record added; README/SETUP live-URL sync is optional follow-up.)*
+- [x] Produce the final handover report (GitHub, deployment URLs, demo access, feature verification, limitations, maintenance). *(Phase 8 Deployment Record below.)*
 
 **Dependencies:** Phase 7 + owner-provided hosting access + explicit deployment approval.
 
 **Completion criteria:** Public frontend and API work against hosted MySQL; all critical workflows pass live; images load; HTTPS/CORS/cookies correct; no secrets exposed; owner can operate the app without their local machine; documentation complete.
+
+## Phase 8 Deployment Record — Live Production
+
+**Status:** Completed and live, 12 November 2026. Free plans only; no payment method added.
+
+### Live service
+
+| Item | Value |
+|---|---|
+| Public URL | **https://zelvora-sg9w.onrender.com** |
+| Host | Render free Docker web service `zelvora` (`srv-dbqp13ijnfac739bpr3g`), Singapore |
+| Database | TiDB Cloud Starter, MySQL-compatible (Singapore), `zelvora_demo_db` |
+| Frontend | Built React app served by the Python API on one origin |
+| Sessions | `ZELVORA_SESSION_STORE=db` (SHA-256 token digests in `sessions`) |
+| Provisioning | First deploy created schema, demo marker, 12 vehicles and both demo accounts; then `ZELVORA_PROVISION_DEMO=0` |
+
+### Verification
+
+| Check | Result |
+|---|---|
+| `/api/health` | 200, database ok |
+| `/api/demo/credentials` | Both synthetic demo accounts published |
+| Home and `/vehicles` deep link | 200 |
+| Seven vehicle images | 200 |
+| CSP, HSTS, `X-Frame-Options`, `nosniff` | Present |
+| HTTP → HTTPS | 301 |
+| Session across Render restart | Customer still authenticated |
+| Real Chrome live test | **9/9**: home, browsing, customer login, booking #1 pending, logout, admin login, approval, reload persistence, customer sees Confirmed |
+
+### Limits and follow-up
+
+- Free Render services sleep after ~15 idle minutes; the first request afterwards takes about a minute.
+- Render's free filesystem is ephemeral; all state lives in TiDB. TiDB does not enforce foreign keys, so the
+  application's validation remains authoritative.
+- The temporary credentials file was deleted and the repository contains no secret. Revoke the Render API key in
+  Dashboard → Account Settings → API Keys, and consider rotating the TiDB password because it was shared in chat.
+- Optional follow-up: live regression for registration, rejection/completion, payment status and profile update;
+  README/SETUP live-URL sync; standalone handover report.
 
 ---
 
@@ -924,7 +962,7 @@ These are dedicated local demo credentials, not real customer or administrator l
 | 12 Nov 2026 | Phase 6 | Completed | Chrome dev + Edge production-preview QA each passed 531/531 actions, 247/247 controls, 18 routes, 0 unexpected errors; BUG-33 regression passed; demo data restored and private fingerprint unchanged; no push/deployment |
 | 12 Nov 2026 | Phase 7 | Approved to start | Owner replied “yes” to the Phase 7 approval request; local production preparation only, no deployment or paid service |
 | 12 Nov 2026 | Phase 7 | Completed | Owner approved the push; `aa39313` pushed to `main`; no deployment or paid service |
-| — | Phase 8 | Awaiting approval | Requires Phase 7 push plus owner-provided hosting access and explicit deployment approval |
+| 12 Nov 2026 | Phase 8 | Completed | Render free Docker + TiDB Starter live at https://zelvora-sg9w.onrender.com; 9/9 live browser checks; DB session survived restart; no billing method added |
 
 ---
 

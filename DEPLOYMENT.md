@@ -1,7 +1,7 @@
 # ZELVORA — Production Deployment Plan (Phase 7)
 
-**Status:** Prepared locally, not deployed. Phase 8 requires owner-provided hosting access and explicit
-deployment approval. No paid plan, secret, push or live deployment is created by this document.
+**Status:** Deployed on 12 November 2026 on free plans. Live at **https://zelvora-sg9w.onrender.com**.
+No paid plan or billing method is used. See the Phase 8 record in `step.md` for verification evidence and limits.
 
 ## 1. Hosting research (checked 12 November 2026)
 
