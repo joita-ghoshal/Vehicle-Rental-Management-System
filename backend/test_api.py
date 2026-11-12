@@ -1,4 +1,4 @@
-"""End-to-end API tests. Start server.py first, then run:  python test_api.py
+"""End-to-end API tests. Start python demo.py serve, then: python demo.py regression
 
 Creates temporary test users and vehicles (names start with "TEST") and removes
 everything it created when it finishes.
@@ -13,8 +13,12 @@ from http.cookiejar import CookieJar
 
 from auth import hash_password
 from database import get_connection, run_query, run_write
+from config import API_HOST, API_PORT, DB_CONFIG, DEMO_MODE
 
-BASE = "http://127.0.0.1:8000"
+if not DEMO_MODE or DB_CONFIG['database'] != 'zelvora_demo_db':
+    raise SystemExit('Run python demo.py regression; regression data must not touch the private database.')
+
+BASE = f"http://{API_HOST}:{API_PORT}"
 RUN = str(int(time.time()))
 results = []
 
@@ -62,6 +66,8 @@ try:
     admin, cust, cust2, anon = Client(), Client(), Client(), Client()
 
     print("\n== Authentication ==")
+    s, r = anon.call('GET', '/api/health')
+    check('Health verifies the MySQL database', s == 200 and r.get('database') == 'ok', r)
     reg = {"name": "TEST Customer", "email": f"cust{RUN}@test.local", "phone": "9876543210",
            "password": "Secret123", "confirm_password": "Secret123"}
     s, r = cust.call("POST", "/api/auth/register", reg)
@@ -109,6 +115,8 @@ try:
         ids[key] = r["vehicle"]["id"]
         created_vehicles.append(ids[key])
     check("Default image assigned when no image given", r["vehicle"]["image_url"].startswith("/images/"))
+    s, r = admin.call('POST', '/api/admin/vehicles', vehicle_payload(seats=2.5, registration_number=f'TST {RUN} FRACTION'))
+    check('Reject fractional seats instead of truncating', s == 400 and 'seats' in r['fields'], r)
     s, r = admin.call("POST", "/api/admin/vehicles", vehicle_payload(registration_number=f"tst {RUN} car"))
     check("Reject duplicate registration number", s == 409, r)
     s, r = admin.call("POST", "/api/admin/vehicles", vehicle_payload(category="Truck", price_per_day=-5, seats=0, image_url="javascript:alert(1)", registration_number=f"TST {RUN} X"))
@@ -124,6 +132,8 @@ try:
     check("Filter by price", [v["id"] for v in r["vehicles"]] == [ids["bike"]], r)
     s, r = anon.call("GET", "/api/vehicles?category=Truck")
     check("Unknown category rejected", s == 400)
+    s, r = anon.call('GET', '/api/vehicles?min_price=NaN')
+    check('Reject non-finite price filters without a database error', s == 400, r)
     s, r = admin.call("PUT", f"/api/admin/vehicles/{ids['scooter']}", vehicle_payload(name="TEST Scooter", category="Scooter", transmission="Automatic", seats=2, price_per_day=300, status="Maintenance", registration_number=f"TST {RUN} scooter"))
     s, r = anon.call("GET", "/api/vehicles?q=Testco")
     check("Maintenance vehicle hidden from customer list", ids["scooter"] not in [v["id"] for v in r["vehicles"]])
@@ -137,11 +147,19 @@ try:
     check("Availability + price calc (3 inclusive days x 1200 = 3600)", s == 200 and r["available"] and r["rental_days"] == 3 and r["total_amount"] == 3600, r)
     s, r = cust.call("GET", f"/api/vehicles/{car}/availability?pickup={d(10)}&return={d(10)}")
     check("Same-day rental counts as 1 day", r["rental_days"] == 1 and r["total_amount"] == 1200, r)
+    s, r = cust.call('GET', f'/api/vehicles/{car}/availability?pickup={d(10)}&return={d(70)}')
+    check('Reject 61 inclusive rental days', s == 400, r)
     for label, a, b in (("past pickup", -1, 2), ("return before pickup", 5, 4)):
         s, r = cust.call("POST", "/api/bookings", {"vehicle_id": car, "pickup_date": d(a), "return_date": d(b)})
         check(f"Reject invalid dates ({label})", s == 400, r)
     s, r = cust.call("POST", "/api/bookings", {"vehicle_id": car, "pickup_date": "nonsense", "return_date": d(2)})
     check("Reject malformed date", s == 400)
+    s, r = cust.call('POST', '/api/bookings', {'vehicle_id': car, 'pickup_date': d(10).replace('-', ''), 'return_date': d(12)})
+    check('Reject compact dates; require YYYY-MM-DD', s == 400, r)
+    s, r = cust.call('POST', '/api/bookings', {'vehicle_id': True, 'pickup_date': d(10), 'return_date': d(12)})
+    check('Reject boolean vehicle ID', s == 400, r)
+    s, r = cust.call('POST', '/api/bookings', {'vehicle_id': car + 0.5, 'pickup_date': d(10), 'return_date': d(12)})
+    check('Reject fractional vehicle ID instead of truncating', s == 400, r)
     s, r = anon.call("POST", "/api/bookings", {"vehicle_id": car, "pickup_date": d(10), "return_date": d(12)})
     check("Booking requires login", s == 401)
     s, r = admin.call("POST", "/api/bookings", {"vehicle_id": car, "pickup_date": d(10), "return_date": d(12)})
@@ -171,6 +189,7 @@ try:
     b3 = r["booking"]["id"]
     s, r = anon.call("GET", f"/api/vehicles/{car}")
     check("Vehicle detail exposes booked ranges (no customer data)", s == 200 and len(r["vehicle"]["booked_ranges"]) == 1 and "user_id" not in json.dumps(r))
+    check('Public vehicle details mask the registration number', r['vehicle']['registration_number'] == 'Hidden for privacy', r)
     s, r = anon.call("GET", f"/api/vehicles?q=Edited&available=1&pickup={d(11)}&return={d(11)}")
     check("'Available only' filter hides booked vehicle for those dates", r["vehicles"] == [], r)
     s, r = anon.call("GET", f"/api/vehicles?q=Edited&available=1&pickup={d(20)}&return={d(21)}")

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export function Loader({ label = 'Loading' }) {
   return (
     <div className="state" role="status">
-      <span className="spinner" aria-hidden="true" />
+      <div className="skeleton-preview" aria-hidden="true"><i /><i /><i /></div>
       <p>{label}…</p>
     </div>
   )
@@ -12,6 +12,7 @@ export function Loader({ label = 'Loading' }) {
 export function ErrorState({ message, onRetry }) {
   return (
     <div className="state state-error" role="alert">
+      <span className="state-symbol" aria-hidden="true">!</span>
       <h3>We could not load this</h3>
       <p>{message}</p>
       {onRetry && <button className="btn btn-dark btn-sm" onClick={onRetry}>Try again</button>}
@@ -22,6 +23,7 @@ export function ErrorState({ message, onRetry }) {
 export function EmptyState({ title, text, actionTo, actionLabel }) {
   return (
     <div className="state">
+      <span className="state-symbol" aria-hidden="true">↗</span>
       <h3>{title}</h3>
       {text && <p>{text}</p>}
       {actionTo && <Link to={actionTo} className="btn btn-primary btn-sm">{actionLabel}</Link>}

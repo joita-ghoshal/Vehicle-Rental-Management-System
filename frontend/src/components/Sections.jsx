@@ -1,23 +1,27 @@
 import { SITE } from '../siteInfo'
+import { Link } from 'react-router-dom'
+import VehicleImage from './VehicleImage'
+import { ASSETS } from '../assets'
 
 export function AboutSection() {
   return (
     <section className="section about">
       <div className="container about-grid">
         <div className="about-image">
-          <img src="/images/car-hatchback.svg" alt="" loading="lazy" />
+          <VehicleImage src={ASSETS.hatchback} />
         </div>
         <div>
-          <h2>A rental desk that remembers it is run by people</h2>
+          <p className="eyebrow">Meet ZELVORA</p>
+          <h2>Thoughtful journeys start with a little clarity.</h2>
           <p>
-            ZELVORA started as a simple idea: renting a car, a bike or a scooter should feel as calm as picking up a
-            book from a friend. We keep a small, well-kept fleet, show every price up front, and let you pay when you
-            collect the keys.
+            One place to compare the fleet, see your rental total and follow a booking from request to confirmation.
+            ZELVORA brings the customer experience and the rental desk together, without unnecessary steps.
           </p>
           <p>
-            This website is a college project that shows how a complete rental service works, from browsing and
-            booking to the admin desk that approves each request.
+            This is a full-stack academic demonstration, not an operating rental service. The demo uses fictional
+            profiles and representative vehicle illustrations. No real rental or payment is processed here.
           </p>
+          <Link to="/vehicles" className="text-link">Find your next ride <span aria-hidden="true">↗</span></Link>
         </div>
       </div>
     </section>
@@ -29,9 +33,10 @@ export function ContactSection() {
     <section className="section contact" id="contact">
       <div className="container contact-grid">
         <div>
-          <h2>Talk to us before you book</h2>
-          <p>Questions about a vehicle, a long rental or pickup times? Send us an email and we will reply within a day.</p>
-          <a className="btn btn-dark" href={`mailto:${SITE.email}?subject=ZELVORA%20rental%20question`}>Email ZELVORA</a>
+          <p className="eyebrow">Take a closer look</p>
+          <h2>Your next story starts with a look around.</h2>
+          <p>Explore the customer experience or the full-control rental desk with the demo logins. This is a self-guided demonstration; the contact details are illustrative, not a staffed support service.</p>
+          <Link className="btn btn-dark" to="/login">Try the demo <span aria-hidden="true">↗</span></Link>
         </div>
         <dl className="contact-list">
           <div><dt>Email</dt><dd>{SITE.email}</dd></div>

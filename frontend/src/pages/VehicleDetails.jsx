@@ -3,6 +3,7 @@ import { useApi } from '../hooks'
 import { formatDate, money } from '../format'
 import StatusBadge from '../components/StatusBadge'
 import { ErrorState, Loader } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
 
 export default function VehicleDetails() {
   const { id } = useParams()
@@ -24,7 +25,7 @@ export default function VehicleDetails() {
       <p className="crumbs"><Link to="/vehicles">Vehicles</Link> / {v.category} / {v.name}</p>
       <div className="detail">
         <div className="detail-main">
-          <div className="detail-image"><img src={v.image_url} alt={`${v.brand} ${v.name}`} /></div>
+          <div className="detail-image"><VehicleImage src={v.image_url} category={v.category} alt={`${v.brand} ${v.name}`} priority /></div>
           <h2>About this vehicle</h2>
           <p className="detail-desc">{v.description}</p>
         </div>

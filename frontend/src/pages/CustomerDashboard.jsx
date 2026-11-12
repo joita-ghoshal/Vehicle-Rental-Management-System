@@ -4,6 +4,7 @@ import { useApi } from '../hooks'
 import { formatDate, money, todayISO } from '../format'
 import StatusBadge from '../components/StatusBadge'
 import { ErrorState, Loader } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
@@ -32,7 +33,7 @@ export default function CustomerDashboard() {
             <h2>Your next trip</h2>
             {next ? (
               <div className="next-trip">
-                <img src={next.image_url} alt="" />
+                <VehicleImage src={next.image_url} category={next.vehicle_category} />
                 <div>
                   <h3>{next.vehicle_name}</h3>
                   <p className="muted">{formatDate(next.pickup_date)} to {formatDate(next.return_date)}</p>

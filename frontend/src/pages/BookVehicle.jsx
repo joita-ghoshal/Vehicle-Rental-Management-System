@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import { useApi } from '../hooks'
 import { formatDate, money, todayISO } from '../format'
 import Field from '../components/Field'
 import { Alert, ErrorState, Loader } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
 
 export default function BookVehicle() {
   const { id } = useParams()
@@ -15,6 +16,7 @@ export default function BookVehicle() {
   const [check, setCheck] = useState(null) // result of the availability check
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
+  const availabilityVersion = useRef(0)
 
   if (loading) return <div className="container page"><Loader label="Loading vehicle" /></div>
   if (error) return <div className="container page narrow"><ErrorState message={error} onRetry={reload} /></div>
@@ -23,6 +25,7 @@ export default function BookVehicle() {
   const today = todayISO()
 
   function change(key, value) {
+    availabilityVersion.current += 1
     setDates({ ...dates, [key]: value })
     setCheck(null)
     setMessage('')
@@ -44,12 +47,16 @@ export default function BookVehicle() {
     setMessage('')
     setCheck(null)
     if (Object.keys(found).length) return
+    const version = ++availabilityVersion.current
     setBusy(true)
     try {
-      setCheck(await api(`/api/vehicles/${v.id}/availability?pickup=${dates.pickup}&return=${dates.ret}`))
+      const result = await api(`/api/vehicles/${v.id}/availability?pickup=${dates.pickup}&return=${dates.ret}`)
+      if (version === availabilityVersion.current) setCheck(result)
     } catch (err) {
-      setMessage(err.message)
-      setErrors({ pickup: err.fields.pickup_date, ret: err.fields.return_date })
+      if (version === availabilityVersion.current) {
+        setMessage(err.message)
+        setErrors({ pickup: err.fields.pickup_date, ret: err.fields.return_date })
+      }
     } finally {
       setBusy(false)
     }
@@ -77,7 +84,7 @@ export default function BookVehicle() {
       <p className="crumbs"><Link to="/vehicles">Vehicles</Link> / <Link to={`/vehicles/${v.id}`}>{v.name}</Link> / Book</p>
       <div className="book">
         <div className="book-summary">
-          <div className="detail-image"><img src={v.image_url} alt={`${v.brand} ${v.name}`} /></div>
+          <div className="detail-image"><VehicleImage src={v.image_url} category={v.category} alt={`${v.brand} ${v.name}`} priority /></div>
           <h1>{v.name}</h1>
           <p className="detail-sub">{v.brand} {v.model} · {v.category}</p>
           <p className="detail-price"><strong>{money(v.price_per_day)}</strong> <span>per day</span></p>

@@ -1,7 +1,7 @@
 """Customer booking APIs: create, list and cancel."""
 from auth import require_customer, require_login
 from database import run_query, transaction
-from utils import ApiError
+from utils import ApiError, whole_number
 from vehicles import rental_days, validate_rental_dates
 
 BOOKING_COLUMNS = (
@@ -13,10 +13,7 @@ BOOKING_COLUMNS = (
 
 def to_id(value, label="id"):
     try:
-        number = int(value)
-        if number < 1:
-            raise ValueError
-        return number
+        return whole_number(value)
     except (TypeError, ValueError):
         raise ApiError(400, f"Invalid {label}.")
 
@@ -51,7 +48,7 @@ def create_booking(ctx):
             "AND pickup_date <= %s AND return_date >= %s LIMIT 1", (user["id"], vehicle_id, ret, pickup))
         if cur.fetchone():
             raise ApiError(409, "You already have a booking for this vehicle on overlapping dates.")
-        total = round(float(vehicle["price_per_day"]) * days, 2)
+        total = vehicle["price_per_day"] * days
         cur.execute(
             "INSERT INTO bookings (user_id, vehicle_id, pickup_date, return_date, total_amount) VALUES (%s, %s, %s, %s, %s)",
             (user["id"], vehicle_id, pickup, ret, total))

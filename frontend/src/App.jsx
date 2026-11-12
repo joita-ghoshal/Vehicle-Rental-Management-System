@@ -24,12 +24,19 @@ import Customers from './admin/Customers'
 
 function Layout() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    const title = { '/': 'Every Ride, A New Story.', '/vehicles': 'Our vehicles', '/login': 'Log in',
+      '/register': 'Create an account', '/about': 'About', '/contact': 'Contact', '/dashboard': 'Your dashboard',
+      '/my-bookings': 'My bookings', '/profile': 'My profile', '/admin': 'Admin dashboard',
+      '/admin/vehicles': 'Vehicle management', '/admin/bookings': 'All bookings', '/admin/customers': 'Customers' }[pathname]
+    document.title = `${title || (pathname.startsWith('/admin/') ? 'Rental desk' : 'Your journey')} | ZELVORA`
+  }, [pathname])
   return (
     <>
       <a href="#content" className="skip-link">Skip to content</a>
       <Navbar />
-      <main id="content"><Outlet /></main>
+      <main id="content" tabIndex="-1"><Outlet /></main>
       <Footer />
     </>
   )

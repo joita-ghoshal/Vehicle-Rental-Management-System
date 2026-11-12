@@ -5,6 +5,7 @@ import { useApi } from '../hooks'
 import { money } from '../format'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { Alert, EmptyState, ErrorState, Loader } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
 
 export default function ManageVehicles() {
   const location = useLocation()
@@ -58,7 +59,7 @@ export default function ManageVehicles() {
         <EmptyState title={archived ? 'Nothing archived' : 'No vehicles yet'} text={archived ? 'Archived vehicles appear here.' : 'Add your first vehicle to start taking bookings.'} />
       )}
       {vehicles.length > 0 && (
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex="0" role="region" aria-label="Vehicle management table">
           <table className="table">
             <thead><tr><th>Vehicle</th><th>Category</th><th>Registration</th><th>Price per day</th><th>Status</th><th>Bookings</th><th>Actions</th></tr></thead>
             <tbody>
@@ -66,7 +67,7 @@ export default function ManageVehicles() {
                 <tr key={v.id}>
                   <td>
                     <div className="cell-vehicle">
-                      <img src={v.image_url} alt="" />
+                      <VehicleImage src={v.image_url} category={v.category} />
                       <div><strong>{v.name}</strong><br /><span className="muted">{v.brand} {v.model}</span></div>
                     </div>
                   </td>
@@ -88,7 +89,7 @@ export default function ManageVehicles() {
                       ) : (
                         <>
                           <Link to={`/admin/vehicles/${v.id}/edit`} className="btn btn-outline btn-sm">Edit</Link>
-                          <button className="btn btn-danger-outline btn-sm" onClick={() => setTarget(v)}>Archive</button>
+                          <button className="btn btn-danger-outline btn-sm" disabled={busy} onClick={() => setTarget(v)}>Archive</button>
                         </>
                       )}
                     </div>

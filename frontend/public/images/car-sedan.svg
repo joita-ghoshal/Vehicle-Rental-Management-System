@@ -1,13 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img">
-<rect width="800" height="600" fill="#E8D8CC"/>
-<circle cx="400" cy="300" r="235" fill="#F5EFE7" opacity=".55"/>
-<line x1="0" y1="500" x2="800" y2="500" stroke="#D6C2B2" stroke-width="3"/>
-<ellipse cx="410" cy="500" rx="300" ry="16" fill="#38283F" opacity=".16"/>
-<path d="M108 405 L108 372 C108 352 124 345 158 340 L292 332 C330 290 372 268 440 268 L520 268 C568 268 604 300 632 336 L690 346 C716 352 726 372 726 405 Z" fill="#B65D79"/>
-<path d="M335 334 C358 300 392 282 436 282 L472 282 L472 334 Z" fill="#F5EFE7" opacity=".9"/><path d="M488 282 L520 282 C548 282 574 306 596 334 L488 334 Z" fill="#F5EFE7" opacity=".9"/>
-<rect x="688" y="352" width="34" height="14" rx="7" fill="#FFF6E0"/>
-<rect x="112" y="350" width="22" height="14" rx="6" fill="#38283F"/>
-<rect x="110" y="392" width="615" height="9" fill="#38283F" opacity=".25"/>
-
-<circle cx="250" cy="410" r="56" fill="#2A1D30"/><circle cx="250" cy="410" r="32" fill="#E8D8CC"/><circle cx="250" cy="410" r="32" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="250" cy="410" r="9" fill="#66546C"/><circle cx="580" cy="410" r="56" fill="#2A1D30"/><circle cx="580" cy="410" r="32" fill="#E8D8CC"/><circle cx="580" cy="410" r="32" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="580" cy="410" r="9" fill="#66546C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<defs>
+ <linearGradient id="bg" x2="800" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#F5EFE7"/><stop offset="1" stop-color="#E8D8CC"/></linearGradient>
+ <linearGradient id="paint" x1="400" y1="266" x2="400" y2="432" gradientUnits="userSpaceOnUse"><stop stop-color="#E8D8CC"/><stop offset=".35" stop-color="#B65D79"/><stop offset=".75" stop-color="#B65D79"/><stop offset="1" stop-color="#66546C"/></linearGradient>
+ <radialGradient id="shadow"><stop stop-color="#38283F" stop-opacity=".3"/><stop offset="1" stop-color="#38283F" stop-opacity="0"/></radialGradient>
+ <g id="wheel"><circle r="53" fill="#38283F"/><circle r="46" stroke="#66546C" stroke-width="2"/><circle r="33" fill="#F5EFE7"/><circle r="26" fill="#66546C"/><path d="M0-28 4-7 25-9 10 3 16 23 0 10-16 23-10 3-25-9-4-7Z" fill="#E8D8CC"/><circle r="7" fill="#38283F"/></g>
+</defs>
+<path fill="url(#bg)" d="M0 0h800v600H0z"/><circle cx="570" cy="208" r="145" fill="#FFFFFF" opacity=".35"/>
+<path d="M85 100v370m-35 0h700M85 100h220" stroke="#66546C" opacity=".12"/>
+<text x="50" y="64" fill="#66546C" font-size="12" font-family="sans-serif" letter-spacing="5">ZELVORA / GRAND TOUR</text>
+<ellipse cx="405" cy="468" rx="345" ry="39" fill="url(#shadow)"/>
+<path d="m100 398 12-48 42-26 99-9 93-63c24-15 112-20 152 0l93 67 101 18 26 43-3 42H100Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m284 314 73-51c20-10 99-10 124 0l64 51H284Z" fill="#66546C" stroke="#E8D8CC" stroke-width="3"/>
+<path d="m306 306 56-37 49-2-50 40m76-39 41 1 49 38-59-1" fill="#F5EFE7" opacity=".3"/>
+<path d="m418 258 4 59m-106 10-1 83m160-84 6 83" stroke="#38283F" stroke-width="3" opacity=".5"/>
+<path d="m134 349 414-17 143 21m-556 37h560" stroke="#F5EFE7" stroke-width="3" opacity=".45"/>
+<path d="M175 422a62 62 0 0 1 124 0m250 0a62 62 0 0 1 124 0" stroke="#66546C" stroke-width="13"/>
+<path d="m109 414 593 1-4 17H115Z" fill="#38283F"/>
+<use href="#wheel" x="237" y="423"/><use href="#wheel" x="611" y="423"/>
+<path d="m661 349 40 9 7 14-48-11m-545-11 29-11-5 19-28 8" fill="#F5EFE7"/>
+<path d="m686 382 23 5m-382-46h24m136 0h24" stroke="#38283F" stroke-width="4" stroke-linecap="round"/>
+<path d="m518 315 22-5 15 14-25 4Z" fill="#66546C"/><path d="M308 424h233" stroke="#E8D8CC" stroke-width="3" opacity=".5"/>
+<text x="50" y="551" fill="#66546C" font-size="10" font-family="sans-serif" letter-spacing="3">ORIGINAL FLEET ILLUSTRATION</text><path d="M650 548h100" stroke="#B65D79" stroke-width="3"/>
 </svg>

@@ -3,6 +3,9 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import Field from '../components/Field'
 import { Alert } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
+import { ASSETS } from '../assets'
+import { useApi } from '../hooks'
 
 export default function Register() {
   const { user, register } = useAuth()
@@ -11,6 +14,7 @@ export default function Register() {
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
+  const { data: demo } = useApi('/api/demo/credentials')
 
   if (user) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
 
@@ -48,9 +52,11 @@ export default function Register() {
   return (
     <div className="container auth">
       <div className="auth-form">
+        <p className="eyebrow">The first step to your next story</p>
         <h1>Create your account</h1>
         <p className="lead">It takes a minute. You can book as soon as you are in.</p>
         <Alert tone="error">{message}</Alert>
+        {demo?.enabled && <Alert tone="info">Synthetic demo only. Use a fictitious name, phone and an email ending in .example, .test or .local. Never enter private information.</Alert>}
         <form onSubmit={submit} noValidate>
           <Field label="Full name" name="name" error={errors.name}>
             <input id="name" autoComplete="name" value={form.name} onChange={set('name')} maxLength={100} />
@@ -74,7 +80,7 @@ export default function Register() {
         <p className="auth-switch">Already registered? <Link to="/login">Log in</Link></p>
       </div>
       <aside className="auth-side">
-        <img src="/images/bike-cruiser.svg" alt="" />
+        <VehicleImage src={ASSETS.cruiser} category="Bike" priority />
         <p className="auth-quote">Every Ride, A New Story.</p>
       </aside>
     </div>

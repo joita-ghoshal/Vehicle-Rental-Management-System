@@ -1,0 +1,38 @@
+# Render blueprint for the single-origin ZELVORA demo.
+# Free plan: the web service sleeps after ~15 idle minutes and wakes slowly.
+# Create the database first (TiDB Cloud Starter free tier is MySQL-compatible),
+# then fill the sync:false values in the Render dashboard. Never commit secrets.
+services:
+  - type: web
+    name: zelvora
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: ZELVORA_ENV
+        value: production
+      - key: ZELVORA_DEMO_MODE
+        value: "1"
+      - key: ZELVORA_DB_NAME
+        value: zelvora_demo_db
+      - key: ZELVORA_DB_HOST
+        sync: false
+      - key: ZELVORA_DB_PORT
+        value: "4000"
+      - key: ZELVORA_DB_USER
+        sync: false
+      - key: ZELVORA_DB_PASSWORD
+        sync: false
+      - key: ZELVORA_COOKIE_SECURE
+        value: "1"
+      - key: ZELVORA_COOKIE_SAMESITE
+        value: Lax
+      - key: ZELVORA_SESSION_STORE
+        value: db
+      - key: ZELVORA_AUTO_MIGRATE
+        value: "1"
+      # Set to "1" for the first deploy only, then back to "0".
+      - key: ZELVORA_PROVISION_DEMO
+        value: "0"

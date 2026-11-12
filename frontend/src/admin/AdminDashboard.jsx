@@ -19,7 +19,9 @@ export default function AdminDashboard() {
   ]
   return (
     <>
+      <p className="eyebrow">Rental desk / Overview</p>
       <h1>Dashboard</h1>
+      <p className="lead">Your fleet, bookings and completed rental revenue, at a glance.</p>
       <div className="admin-stats">
         <div className="stat stat-feature">
           <span>Completed rental revenue</span>
@@ -38,7 +40,7 @@ export default function AdminDashboard() {
       {data.recent_bookings.length === 0 ? (
         <p className="muted">No bookings have been made yet.</p>
       ) : (
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex="0" role="region" aria-label="Latest booking requests table">
           <table className="table">
             <thead><tr><th>ID</th><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Total</th><th>Status</th></tr></thead>
             <tbody>

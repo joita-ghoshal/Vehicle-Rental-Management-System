@@ -9,6 +9,7 @@ export default function Footer() {
         <div>
           <Logo />
           <p className="footer-tag">Every Ride, A New Story.</p>
+          <p className="footer-description">A considered way to explore cars, bikes and scooters.<br />Built as a full-stack academic demonstration.</p>
         </div>
         <nav aria-label="Footer" className="footer-links">
           <Link to="/vehicles">Browse vehicles</Link>
@@ -23,7 +24,8 @@ export default function Footer() {
         </div>
       </div>
       <div className="container footer-base">
-        <p>© {new Date().getFullYear()} ZELVORA. A college demonstration project. Payment is made at pickup.</p>
+        <p>© {new Date().getFullYear()} ZELVORA. A college demonstration project. No real rentals or payments.</p>
+        <span>Designed for the journey.</span>
       </div>
     </footer>
   )

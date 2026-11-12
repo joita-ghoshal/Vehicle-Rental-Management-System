@@ -1,18 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img">
-<rect width="800" height="600" fill="#E8D8CC"/>
-<circle cx="400" cy="300" r="235" fill="#F5EFE7" opacity=".55"/>
-<line x1="0" y1="500" x2="800" y2="500" stroke="#D6C2B2" stroke-width="3"/>
-<ellipse cx="410" cy="500" rx="300" ry="16" fill="#38283F" opacity=".16"/>
-<circle cx="215" cy="430" r="72" fill="none" stroke="#2A1D30" stroke-width="16"/><circle cx="215" cy="430" r="58" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="215" cy="430" r="9" fill="#66546C"/><circle cx="595" cy="430" r="72" fill="none" stroke="#2A1D30" stroke-width="16"/><circle cx="595" cy="430" r="58" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="595" cy="430" r="9" fill="#66546C"/>
-<path d="M215 430 L215 395 C215 380 240 372 262 378 L300 388" stroke="#38283F" stroke-width="0" fill="none"/>
-<path d="M170 372 C170 395 200 400 230 392 L290 380 L290 366 C250 360 190 352 170 372 Z" fill="#38283F"/>
-<line x1="595" y1="430" x2="548" y2="300" stroke="#2A1D30" stroke-width="13" stroke-linecap="round"/>
-<path d="M548 300 L520 248 L470 238" stroke="#2A1D30" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<line x1="215" y1="430" x2="380" y2="388" stroke="#66546C" stroke-width="12" stroke-linecap="round"/>
-<rect x="320" y="340" width="150" height="75" rx="18" fill="#66546C"/>
-<path d="M395 408 L250 420" stroke="#8D7C93" stroke-width="16" stroke-linecap="round"/>
-<ellipse cx="410" cy="318" rx="92" ry="48" fill="#38283F"/>
-<path d="M208 340 C236 322 290 324 322 336 L322 350 L215 358 Z" fill="#38283F"/>
-<circle cx="560" cy="288" r="22" fill="#2A1D30"/><circle cx="560" cy="288" r="14" fill="#FFF6E0"/>
-<path d="M505 300 C528 290 548 318 544 336 L500 330 Z" fill="#38283F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<defs>
+ <linearGradient id="bg" x2="800" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#E8D8CC"/><stop offset="1" stop-color="#F5EFE7"/></linearGradient>
+ <linearGradient id="paint" x2="0" y2="1"><stop stop-color="#66546C"/><stop offset=".45" stop-color="#38283F"/><stop offset="1" stop-color="#66546C"/></linearGradient>
+ <radialGradient id="shadow"><stop stop-color="#38283F" stop-opacity=".3"/><stop offset="1" stop-color="#38283F" stop-opacity="0"/></radialGradient>
+ <g id="wheel"><circle r="67" stroke="#38283F" stroke-width="20"/><circle r="53" stroke="#66546C" stroke-width="4"/><path d="M-52 0H52M0-52V52m-37-89 74 74m-74 0 74-74m-56-11 38 96m-67-29 96-38m-96 0 96 38m-67 29 38-96" stroke="#66546C" stroke-width="2"/><circle r="22" fill="#E8D8CC" stroke="#66546C" stroke-width="4"/><circle r="8" fill="#38283F"/></g>
+</defs>
+<path fill="url(#bg)" d="M0 0h800v600H0z"/><circle cx="376" cy="244" r="167" fill="#FFFFFF" opacity=".25"/><path d="M50 488h700M108 104v359" stroke="#66546C" opacity=".1"/>
+<text x="50" y="64" fill="#66546C" font-size="12" font-family="sans-serif" letter-spacing="5">ZELVORA / SLOW JOURNEYS</text>
+<ellipse cx="404" cy="490" rx="310" ry="34" fill="url(#shadow)"/>
+<use href="#wheel" x="209" y="419"/><use href="#wheel" x="602" y="419"/>
+<path d="m211 419 139-28 103 1 80-101m-242 41 68 77 73-93" stroke="#38283F" stroke-width="12" stroke-linecap="round"/>
+<path d="m210 403 53-80m-33 68 42-66" stroke="#66546C" stroke-width="8"/><path d="m236 381 11-4m-5-5 11-5m-5-5 11-5m-5-5 11-5" stroke="#E8D8CC" stroke-width="3"/>
+<path d="m540 289 67 130m-52-133 66 128" stroke="#66546C" stroke-width="9"/><path d="m545 290 36 64" stroke="#F5EFE7" stroke-width="4"/>
+<path d="m543 284-34-50-41-1m40 1 7-32 20-6" stroke="#38283F" stroke-width="8" stroke-linecap="round"/><ellipse cx="538" cy="195" rx="15" ry="8" fill="#66546C"/>
+<path d="M308 301c13-32 37-48 88-42 45 5 74 26 89 47l-38 33-99-6-40-32Z" fill="url(#paint)" stroke="#38283F" stroke-width="2"/>
+<path d="m334 283 35-10 39 4" stroke="#E8D8CC" stroke-width="4" opacity=".6"/>
+<path d="M164 350c20-25 65-36 108-26l43 17-7 16-133 10Z" fill="#38283F"/><path d="m183 345 77-9 26 10" stroke="#E8D8CC" stroke-width="2"/>
+<path d="M148 377c22-41 87-54 127-24m278 20c22-32 72-34 102-1" stroke="#66546C" stroke-width="10" stroke-linecap="round"/>
+<path d="m356 331-21 53 44 27 33-35-7-45Z" fill="#66546C" stroke="#38283F" stroke-width="5"/><path d="m342 349 57 2m-60 9 57 2m-60 9 51 2m-43 12 35 3" stroke="#F5EFE7" stroke-width="3" opacity=".6"/>
+<path d="m416 383 9 32-151 16-12-15 98-5" stroke="#66546C" stroke-width="12" stroke-linecap="round"/><path d="m286 420 115-7" stroke="#F5EFE7" stroke-width="3"/>
+<circle cx="561" cy="277" r="24" fill="#38283F"/><circle cx="566" cy="274" r="16" fill="#F5EFE7"/><circle cx="566" cy="274" r="11" stroke="#E8D8CC" stroke-width="3"/>
+<text x="50" y="551" fill="#66546C" font-size="10" font-family="sans-serif" letter-spacing="3">ORIGINAL FLEET ILLUSTRATION</text><path d="M650 548h100" stroke="#B65D79" stroke-width="3"/>
 </svg>

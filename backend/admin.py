@@ -14,19 +14,23 @@ VEHICLE_FIELDS = ("name", "brand", "model", "category", "registration_number", "
 # ---------- dashboard ----------
 def dashboard(ctx):
     require_admin(ctx)
-    one = lambda sql: run_query(sql, one=True)
-    summary = {
-        "total_vehicles": one("SELECT COUNT(*) AS n FROM vehicles WHERE is_archived = 0")["n"],
-        "total_customers": one("SELECT COUNT(*) AS n FROM users WHERE role = 'customer'")["n"],
-        "total_bookings": one("SELECT COUNT(*) AS n FROM bookings")["n"],
-        "pending_bookings": one("SELECT COUNT(*) AS n FROM bookings WHERE booking_status = 'Pending'")["n"],
-        "confirmed_bookings": one("SELECT COUNT(*) AS n FROM bookings WHERE booking_status = 'Confirmed'")["n"],
-        "completed_bookings": one("SELECT COUNT(*) AS n FROM bookings WHERE booking_status = 'Completed'")["n"],
-        "completed_revenue": one("SELECT COALESCE(SUM(total_amount), 0) AS n FROM bookings WHERE booking_status = 'Completed'")["n"],
-    }
-    recent = run_query(
-        f"SELECT {BOOKING_COLUMNS}, u.name AS customer_name FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id "
-        "JOIN users u ON u.id = b.user_id ORDER BY b.created_at DESC, b.id DESC LIMIT 5")
+    # One aggregate statement avoids combining counts/revenue from different
+    # moments while another admin is approving or completing a booking.
+    with transaction() as cur:
+        cur.execute(
+            "SELECT (SELECT COUNT(*) FROM vehicles WHERE is_archived=0) AS total_vehicles, "
+            "(SELECT COUNT(*) FROM users WHERE role='customer') AS total_customers, "
+            "COUNT(*) AS total_bookings, "
+            "COUNT(CASE WHEN booking_status='Pending' THEN 1 END) AS pending_bookings, "
+            "COUNT(CASE WHEN booking_status='Confirmed' THEN 1 END) AS confirmed_bookings, "
+            "COUNT(CASE WHEN booking_status='Completed' THEN 1 END) AS completed_bookings, "
+            "COALESCE(SUM(CASE WHEN booking_status='Completed' THEN total_amount ELSE 0 END),0) AS completed_revenue "
+            "FROM bookings")
+        summary = cur.fetchone()
+        cur.execute(
+            f"SELECT {BOOKING_COLUMNS}, u.name AS customer_name FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id "
+            "JOIN users u ON u.id = b.user_id ORDER BY b.created_at DESC, b.id DESC LIMIT 5")
+        recent = cur.fetchall()
     return 200, {"summary": summary, "recent_bookings": recent}
 
 
@@ -128,7 +132,8 @@ def list_bookings(ctx):
             raise ApiError(400, "Unknown booking status.")
         sql += " WHERE b.booking_status = %s"
         params = (status,)
-    return 200, {"bookings": run_query(sql + " ORDER BY b.created_at DESC, b.id DESC", params)}
+    rows = run_query(sql + " ORDER BY b.created_at DESC, b.id DESC", params)
+    return 200, {"bookings": rows}
 
 
 def approve_booking(ctx):
@@ -143,8 +148,10 @@ def approve_booking(ctx):
         cur.execute("SELECT id, status, is_archived FROM vehicles WHERE id = %s FOR UPDATE", (first_look["vehicle_id"],))
         vehicle = cur.fetchone()
         cur.execute("SELECT id, vehicle_id, booking_status, pickup_date, return_date, "
-                    "(pickup_date < CURDATE()) AS pickup_passed FROM bookings WHERE id = %s FOR UPDATE", (booking_id,))
+                     "(pickup_date < CURDATE()) AS pickup_passed FROM bookings WHERE id = %s FOR UPDATE", (booking_id,))
         booking = cur.fetchone()
+        if not booking or not vehicle:
+            raise ApiError(404, "Booking or vehicle no longer exists.")
         if booking["booking_status"] != "Pending":
             raise ApiError(409, f"Only pending bookings can be approved. This one is {booking['booking_status'].lower()}.")
         if vehicle["is_archived"] or vehicle["status"] != "Active":

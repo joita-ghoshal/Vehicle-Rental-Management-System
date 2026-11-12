@@ -5,6 +5,7 @@ import { useApi } from '../hooks'
 import { formatDate, money } from '../format'
 import StatusBadge from '../components/StatusBadge'
 import ConfirmDialog from '../components/ConfirmDialog'
+import VehicleImage from '../components/VehicleImage'
 import { Alert, EmptyState, ErrorState, Loader } from '../components/Feedback'
 
 export default function MyBookings() {
@@ -51,7 +52,7 @@ export default function MyBookings() {
       <ul className="booking-list">
         {bookings.map((b) => (
           <li key={b.id} className="booking-card">
-            <img src={b.image_url} alt="" className="booking-thumb" />
+            <VehicleImage src={b.image_url} category={b.vehicle_category} className="booking-thumb" />
             <div className="booking-info">
               <div className="booking-top">
                 <h3><Link to={`/vehicles/${b.vehicle_id}`}>{b.vehicle_name}</Link></h3>

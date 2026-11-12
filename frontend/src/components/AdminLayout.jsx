@@ -13,7 +13,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/customers" className={link}>Customers</NavLink>
         </nav>
       </aside>
-      <section className="admin-main"><Outlet /></section>
+      <section className="admin-main">
+        <Outlet />
+      </section>
     </div>
   )
 }

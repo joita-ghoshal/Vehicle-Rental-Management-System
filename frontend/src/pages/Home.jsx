@@ -5,13 +5,14 @@ import { CATEGORIES, money } from '../format'
 import VehicleCard from '../components/VehicleCard'
 import { ErrorState, Loader, EmptyState } from '../components/Feedback'
 import { AboutSection, ContactSection } from '../components/Sections'
+import VehicleImage from '../components/VehicleImage'
+import { CATEGORY_IMAGES } from '../assets'
 
 const CATEGORY_COPY = {
   Car: 'For families, long roads and monsoon weekends.',
   Bike: 'For open highways and an easy sense of freedom.',
   Scooter: 'For short hops, shopping and city lanes.',
 }
-const CATEGORY_IMAGE = { Car: '/images/car-suv.svg', Bike: '/images/bike-sport.svg', Scooter: '/images/scooter-classic.svg' }
 
 export default function Home() {
   const { data, loading, error, reload } = useApi('/api/vehicles')
@@ -37,22 +38,24 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <h1>Every Ride, A New&nbsp;Story.</h1>
+            <p className="eyebrow"><span className="eyebrow-line" /> A little freedom, thoughtfully planned</p>
+            <h1>Every Ride,<br /><em>A New Story.</em></h1>
             <p className="lead">
-              Cars for the long road, bikes for the open highway and scooters for the city. Pick a vehicle, choose
-              your dates and pay when you collect the keys.
+              A weekend away. A different route home. Find the right car, bike or scooter for whatever comes next.
+              Clear daily rates. Payment at pickup.
             </p>
             <div className="hero-actions">
-              <Link to="/vehicles" className="btn btn-primary btn-lg">Explore vehicles</Link>
+              <Link to="/vehicles" className="btn btn-primary btn-lg">Explore vehicles <span aria-hidden="true">↗</span></Link>
               <Link to="/register" className="btn btn-outline btn-lg">Create an account</Link>
             </div>
+            <p className="hero-footnote">Choose your dates. Send a request. Ride once confirmed.</p>
           </div>
           <div className="hero-arch">
-            <img src={heroVehicle?.image_url || '/images/car-sedan.svg'} alt={heroVehicle ? `${heroVehicle.brand} ${heroVehicle.name}` : 'A ZELVORA rental car'} />
+            <VehicleImage src={heroVehicle?.image_url} category="Car" alt={heroVehicle ? `Representative illustration for ${heroVehicle.brand} ${heroVehicle.name}` : 'ZELVORA car illustration'} priority />
             {heroVehicle && (
               <Link to={`/vehicles/${heroVehicle.id}`} className="hero-tag">
-                <span>{heroVehicle.brand} {heroVehicle.name}</span>
-                <strong>{money(heroVehicle.price_per_day)} per day</strong>
+                <span><small>From the collection</small>{heroVehicle.brand} {heroVehicle.name}</span>
+                <strong>{money(heroVehicle.price_per_day)} <small>/ day ↗</small></strong>
               </Link>
             )}
           </div>
@@ -72,20 +75,30 @@ export default function Home() {
             </div>
             <button className="btn btn-dark" type="submit">Find vehicles</button>
           </form>
+          <p className="artwork-note">Original category illustrations. Specifications and availability are shown on each vehicle page.</p>
         </div>
       </section>
 
+      <div className="journey-strip">
+        <div className="container journey-facts">
+          <p><strong>Three ways to travel</strong><span>Cars, bikes &amp; scooters</span></p>
+          <p><strong>Know the total first</strong><span>Daily rates. Inclusive rental days.</span></p>
+          <p><strong>Pay at pickup</strong><span>No online card details required</span></p>
+        </div>
+      </div>
+
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Choose how you want to travel</h2>
+          <p className="eyebrow">The collection</p>
+          <h2 className="section-title">A different ride for every kind of day.</h2>
           <div className="category-grid">
             {CATEGORIES.map((c) => (
               <Link key={c} to={`/vehicles?category=${c}`} className={`category-tile category-${c.toLowerCase()}`}>
-                <img src={CATEGORY_IMAGE[c]} alt="" loading="lazy" />
+                <VehicleImage src={CATEGORY_IMAGES[c]} category={c} />
                 <div className="category-text">
                   <h3>{c === 'Bike' ? 'Bikes' : c === 'Car' ? 'Cars' : 'Scooters'}</h3>
                   <p>{CATEGORY_COPY[c]}</p>
-                  <span className="category-count">{loading ? 'Loading…' : `${count(c)} available`}</span>
+                  <span className="category-count">{loading ? 'Loading…' : error ? 'Explore collection' : `${count(c)} in the fleet`} <span aria-hidden="true">↗</span></span>
                 </div>
               </Link>
             ))}
@@ -96,7 +109,7 @@ export default function Home() {
       <section className="section section-plum">
         <div className="container">
           <div className="section-head">
-            <h2 className="section-title">Featured vehicles</h2>
+            <div><p className="eyebrow">A starting point for your next story</p><h2 className="section-title">Featured vehicles</h2></div>
             <Link to="/vehicles" className="text-link">See the full fleet</Link>
           </div>
           {loading && <Loader label="Loading vehicles" />}
@@ -114,6 +127,7 @@ export default function Home() {
 
       <section className="section">
         <div className="container">
+          <p className="eyebrow">Less planning. More possibilities.</p>
           <h2 className="section-title">Three steps from browsing to the road</h2>
           <ol className="steps">
             <li><h3>Choose</h3><p>Browse cars, bikes and scooters. Search by name or brand and filter by price.</p></li>
@@ -125,7 +139,7 @@ export default function Home() {
 
       <section className="section why">
         <div className="container why-grid">
-          <h2>Why people choose ZELVORA</h2>
+          <div><p className="eyebrow">Considered, from the start</p><h2>Small details.<br />A simpler journey.</h2><p className="muted">A clear process, without the guesswork.</p></div>
           <ul className="why-list">
             <li><strong>Clear prices.</strong> You see the daily rate and the full total before you send a request.</li>
             <li><strong>No double bookings.</strong> A vehicle is never confirmed twice for the same day.</li>

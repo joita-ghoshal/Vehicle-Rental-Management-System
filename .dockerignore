@@ -1,0 +1,17 @@
+.git
+.gitignore
+.github
+node_modules
+**/node_modules
+frontend/dist
+backend/__pycache__
+**/__pycache__
+*.pyc
+*.log
+backend/.env
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+.vscode
+%LOCALAPPDATA%

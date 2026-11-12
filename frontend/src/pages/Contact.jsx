@@ -5,7 +5,7 @@ export default function Contact() {
     <>
       <div className="container page-head">
         <h1>Contact</h1>
-        <p className="lead">We are happy to help with any rental question.</p>
+        <p className="lead">Demo information and a closer look at the ZELVORA experience.</p>
       </div>
       <ContactSection />
     </>

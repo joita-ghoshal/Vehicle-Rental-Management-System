@@ -11,7 +11,7 @@ export default function Customers() {
       {error && <ErrorState message={error} onRetry={reload} />}
       {data && data.customers.length === 0 && <EmptyState title="No customers yet" text="Registered customers will appear here." />}
       {data && data.customers.length > 0 && (
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex="0" role="region" aria-label="Customer records table">
           <table className="table">
             <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Bookings</th></tr></thead>
             <tbody>

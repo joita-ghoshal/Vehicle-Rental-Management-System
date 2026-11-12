@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
   phone         VARCHAR(20)  NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   role          ENUM('customer', 'admin') NOT NULL DEFAULT 'customer',
+  is_demo       TINYINT(1) NOT NULL DEFAULT 0,
   created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY uq_users_email (email)
@@ -63,4 +64,17 @@ CREATE TABLE IF NOT EXISTS bookings (
   CONSTRAINT fk_bookings_vehicle FOREIGN KEY (vehicle_id) REFERENCES vehicles (id) ON DELETE RESTRICT,
   CONSTRAINT chk_bookings_dates  CHECK (return_date >= pickup_date),
   CONSTRAINT chk_bookings_amount CHECK (total_amount >= 0)
+) ENGINE=InnoDB;
+
+-- 4) Sessions (only used when ZELVORA_SESSION_STORE=db) ----------------
+-- token_hash is a SHA-256 digest; the raw cookie token is never stored.
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash     CHAR(64) NOT NULL,
+  user_id        INT UNSIGNED NOT NULL,
+  expires_at     DOUBLE NOT NULL,
+  password_stamp CHAR(64) NOT NULL,
+  created_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (token_hash),
+  KEY idx_sessions_expires (expires_at),
+  KEY idx_sessions_user (user_id)
 ) ENGINE=InnoDB;

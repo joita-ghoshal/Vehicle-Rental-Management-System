@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import { money } from '../format'
+import VehicleImage from './VehicleImage'
 
 export default function VehicleCard({ vehicle, large = false }) {
   const v = vehicle
   return (
     <article className={large ? 'vcard vcard-large' : 'vcard'}>
       <Link to={`/vehicles/${v.id}`} className="vcard-media" aria-label={`View ${v.name}`}>
-        <img src={v.image_url} alt={`${v.brand} ${v.name}`} loading="lazy" />
+        <VehicleImage src={v.image_url} category={v.category} alt={`${v.brand} ${v.name}`} />
         <span className="vcard-category">{v.category}</span>
       </Link>
       <div className="vcard-body">

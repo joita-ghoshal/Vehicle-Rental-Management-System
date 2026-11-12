@@ -53,7 +53,7 @@ export default function ManageBookings() {
       {error && <ErrorState message={error} onRetry={reload} />}
       {data && bookings.length === 0 && <EmptyState title="No bookings here" text={filter === 'All' ? 'Bookings will appear when customers send requests.' : `There are no ${filter.toLowerCase()} bookings.`} />}
       {bookings.length > 0 && (
-        <div className="table-wrap">
+        <div className="table-wrap" tabIndex="0" role="region" aria-label="All bookings table">
           <table className="table">
             <thead><tr><th>ID</th><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Total</th><th>Status</th><th>Payment</th><th>Actions</th></tr></thead>
             <tbody>

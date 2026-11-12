@@ -1,0 +1,18 @@
+# Optional split-origin frontend (Option B). Not used by the recommended
+# single-origin Docker/Render deployment.
+[build]
+  base = "frontend"
+  command = "npm ci && VITE_BASE=/ npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"

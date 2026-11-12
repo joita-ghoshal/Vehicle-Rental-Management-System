@@ -23,7 +23,7 @@ ZELVORA combines practical functionality with a modern, elegant, and responsive 
 | **Group** | Group 8 |
 | **Project Lead** | Joita Ghoshal |
 | **Development Approach** | Modular and Phase-Wise Development |
-| **Project Status** | ✅ Completed |
+| **Project Status** | ✅ Completed locally · production preparation in progress |
 
 ---
 
@@ -646,9 +646,31 @@ ZELVORA uses Python's built-in HTTP server for backend API handling.
 
 This architecture is suitable for local academic demonstrations and educational development.
 
-For public production deployment, additional server infrastructure, HTTPS, stronger security controls, and deployment configuration would be required.
+For public production deployment, additional server infrastructure, HTTPS, stronger security controls, and deployment configuration are required. Phase 7 adds a single-origin Docker/Render setup, production cookie/CORS/session settings, migrations and environment documentation; see **[`DEPLOYMENT.md`](DEPLOYMENT.md)**.
 
 For environment-specific configuration and troubleshooting, refer to `SETUP.md`.
+
+---
+
+## 🚀 Production Deployment Preparation
+
+The repository now includes the configuration needed to deploy the full stack without changing the approved
+React/Python/MySQL stack:
+
+- **Single-origin Docker image:** the Python API also serves the built React app, so cookies and deep links
+  work without CORS.
+- **Render blueprint:** `render.yaml` describes a free Docker web service and its environment variables.
+- **Hosted MySQL:** the recommended free option is TiDB Cloud Starter (MySQL-compatible). Aiven's free MySQL
+  tier retires on 21 December 2026 and is not recommended.
+- **Production settings:** `0.0.0.0`/`PORT`, `Secure`/`SameSite` cookies, optional CORS allowlist, security
+  headers, SPA fallback, and optional DB-backed sessions.
+- **Migrations and demo provisioning:** `backend/migrate_db.py`, `database/migrations/`, and
+  `ZELVORA_PROVISION_DEMO=1` for a first deploy.
+- **No secrets in Git:** only `.env.example` files are tracked.
+
+Exact limits, trade-offs, environment variables, deployment steps and rollback are documented in
+**[`DEPLOYMENT.md`](DEPLOYMENT.md)**. Nothing is deployed by the repository itself; Phase 8 requires
+owner-provided hosting access and explicit approval.
 
 ---
 
@@ -727,7 +749,7 @@ The documentation includes:
 - Technical Decisions
 - Completed Tasks and Progress Records
 
-**Project Status: Completed**
+**Project Status: Completed locally; Phase 7 production preparation in progress.**
 
 The roadmap serves as a reference for the project's development process, technical organization, and implementation history.
 
@@ -745,9 +767,10 @@ The project includes basic security practices such as:
 - Session Management
 - Restricted Admin Operations
 
-The application uses Python's built-in HTTP server for local academic demonstration.
-
-It is **not intended for production deployment** without additional security hardening, HTTPS configuration, and a production-grade server.
+The application uses Python's built-in HTTP server. It is **not a hardened production server**; Phase 7
+provides a single-origin deployment configuration for this academic demo, with HTTPS, security headers and
+persistent sessions documented in **[`DEPLOYMENT.md`](DEPLOYMENT.md)**. A production-grade server, monitoring
+and stronger controls remain later work.
 
 ---
 

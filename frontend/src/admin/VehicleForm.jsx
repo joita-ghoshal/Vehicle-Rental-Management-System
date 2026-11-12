@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../api'
 import Field from '../components/Field'
 import { Alert } from '../components/Feedback'
+import VehicleImage from '../components/VehicleImage'
 
 const EMPTY = {
   name: '', brand: '', model: '', category: 'Car', registration_number: '', fuel_type: 'Petrol',
   transmission: 'Manual', seats: '5', price_per_day: '', image_url: '', description: '', status: 'Active',
 }
-const DEFAULT_IMAGES = { Car: '/images/car-sedan.svg', Bike: '/images/bike-sport.svg', Scooter: '/images/scooter-classic.svg' }
 
 // Used by both the Add Vehicle and Edit Vehicle pages.
 export default function VehicleForm({ vehicle, vehicleId }) {
@@ -53,7 +53,7 @@ export default function VehicleForm({ vehicle, vehicleId }) {
     }
   }
 
-  const preview = form.image_url.trim() || DEFAULT_IMAGES[form.category]
+  const preview = form.image_url.trim()
 
   return (
     <form className="panel vehicle-form" onSubmit={submit} noValidate>
@@ -101,7 +101,7 @@ export default function VehicleForm({ vehicle, vehicleId }) {
       <Field label="Image link" name="image_url" error={errors.image_url} hint="Optional. Paste an image link, or leave empty to use the default picture for this category.">
         <input id="image_url" value={form.image_url} onChange={set('image_url')} placeholder="https://… or /images/…" maxLength={500} />
       </Field>
-      <img className="form-preview" src={preview} alt="Preview of the vehicle" />
+      <VehicleImage className="form-preview" src={preview} category={form.category} alt="Preview of the vehicle" />
       <Field label="Description" name="description" error={errors.description}>
         <textarea id="description" rows={5} value={form.description} onChange={set('description')} maxLength={2000} />
       </Field>

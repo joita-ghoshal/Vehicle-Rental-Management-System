@@ -1,16 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img">
-<rect width="800" height="600" fill="#E8D8CC"/>
-<circle cx="400" cy="300" r="235" fill="#F5EFE7" opacity=".55"/>
-<line x1="0" y1="500" x2="800" y2="500" stroke="#D6C2B2" stroke-width="3"/>
-<ellipse cx="410" cy="500" rx="300" ry="16" fill="#38283F" opacity=".16"/>
-<circle cx="225" cy="448" r="50" fill="#2A1D30"/><circle cx="225" cy="448" r="29" fill="#E8D8CC"/><circle cx="225" cy="448" r="29" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="225" cy="448" r="8" fill="#66546C"/><circle cx="595" cy="448" r="50" fill="#2A1D30"/><circle cx="595" cy="448" r="29" fill="#E8D8CC"/><circle cx="595" cy="448" r="29" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="595" cy="448" r="8" fill="#66546C"/>
-<line x1="595" y1="448" x2="565" y2="280" stroke="#2A1D30" stroke-width="11" stroke-linecap="round"/>
-<path d="M130 395 C130 320 290 300 335 335 L335 425 L215 432 L150 420 Z" fill="#B65D79"/>
-<path d="M232 372 L206 410 L232 410 L218 444 L262 396 L236 396 L252 372 Z" fill="#F5EFE7"/>
-<path d="M168 318 C200 296 300 296 335 312 L335 336 L172 342 Z" fill="#38283F"/>
-<rect x="320" y="418" width="170" height="24" rx="12" fill="#B65D79"/>
-<path d="M478 440 L520 276 L565 266 L586 306 L568 440 Z" fill="#B65D79"/>
-<line x1="540" y1="268" x2="505" y2="232" stroke="#2A1D30" stroke-width="12" stroke-linecap="round"/>
-<circle cx="590" cy="300" r="12" fill="#FFF6E0"/>
-<path d="M545 395 A55 55 0 0 1 645 400" fill="none" stroke="#B65D79" stroke-width="10"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<defs>
+ <linearGradient id="bg" x2="800" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#E8D8CC"/><stop offset="1" stop-color="#F5EFE7"/></linearGradient>
+ <linearGradient id="paint" x2=".4" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#F5EFE7"/><stop offset="1" stop-color="#66546C"/></linearGradient>
+ <radialGradient id="shadow"><stop stop-color="#38283F" stop-opacity=".3"/><stop offset="1" stop-color="#38283F" stop-opacity="0"/></radialGradient>
+ <g id="wheel"><circle r="51" fill="#38283F"/><circle r="42" stroke="#66546C" stroke-width="2"/><circle r="30" fill="#66546C"/><path d="m0-26 8 17 17 1-12 13 3 20-16-10-16 10 3-20-12-13 17-1Z" fill="#E8D8CC"/><circle r="8" fill="#38283F"/></g>
+</defs>
+<path fill="url(#bg)" d="M0 0h800v600H0z"/><circle cx="390" cy="258" r="164" fill="#FFFFFF" opacity=".3"/><path d="M70 118v353m0-353h95M50 490h700" stroke="#66546C" opacity=".12"/>
+<text x="50" y="64" fill="#66546C" font-size="12" font-family="sans-serif" letter-spacing="5">ZELVORA / QUIET MOTION</text>
+<ellipse cx="410" cy="486" rx="275" ry="32" fill="url(#shadow)"/>
+<use href="#wheel" x="242" y="435"/><use href="#wheel" x="586" y="435"/>
+<path d="m561 285 24 148" stroke="#66546C" stroke-width="14"/>
+<path d="m168 402 9-60 48-26h110l30 45-12 57-146 3-39-19Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m179 341 56-11 89 4m-141 23 153-2" stroke="#B65D79" stroke-width="4"/>
+<path d="m189 313 29-13 104 1 22 13-5 13H189Z" fill="#38283F"/><path d="m213 309 103 1" stroke="#E8D8CC" stroke-width="2" opacity=".6"/>
+<path d="m343 411 105 2 25-78 44-78 40 7 23 49-19 56-13 57-95 5-109-4Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m475 345 57-62 22 33-32 58-38 43" fill="#38283F"/><path d="m489 348 43-47 9 17-29 49-28 44" fill="#66546C"/>
+<path d="m522 260-11-22-34-7m34 7 11-35 16-3m-67 32-23-26-19 1" stroke="#38283F" stroke-width="6" stroke-linecap="round"/>
+<ellipse cx="543" cy="198" rx="15" ry="8" fill="#66546C"/><ellipse cx="424" cy="207" rx="13" ry="8" fill="#66546C"/>
+<path d="m552 278 24 8 1 12-24-2m-374 52 11-2" stroke="#F5EFE7" stroke-width="5" stroke-linecap="round"/>
+<path d="m274 355-26 33h20l-13 26 38-40h-23l17-19Z" fill="#B65D79"/>
+<path d="M541 399c23-22 64-22 90 1" stroke="#66546C" stroke-width="11" stroke-linecap="round"/><path d="m347 424 100 1" stroke="#38283F" stroke-width="6"/>
+<text x="50" y="551" fill="#66546C" font-size="10" font-family="sans-serif" letter-spacing="3">ORIGINAL FLEET ILLUSTRATION</text><path d="M650 548h100" stroke="#B65D79" stroke-width="3"/>
 </svg>

@@ -1,17 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img">
-<rect width="800" height="600" fill="#E8D8CC"/>
-<circle cx="400" cy="300" r="235" fill="#F5EFE7" opacity=".55"/>
-<line x1="0" y1="500" x2="800" y2="500" stroke="#D6C2B2" stroke-width="3"/>
-<ellipse cx="410" cy="500" rx="300" ry="16" fill="#38283F" opacity=".16"/>
-<circle cx="215" cy="430" r="70" fill="none" stroke="#2A1D30" stroke-width="16"/><circle cx="215" cy="430" r="56" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="215" cy="430" r="9" fill="#66546C"/><circle cx="595" cy="430" r="70" fill="none" stroke="#2A1D30" stroke-width="16"/><circle cx="595" cy="430" r="56" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="595" cy="430" r="9" fill="#66546C"/>
-<line x1="595" y1="430" x2="548" y2="298" stroke="#2A1D30" stroke-width="13" stroke-linecap="round"/>
-<line x1="548" y1="298" x2="505" y2="280" stroke="#2A1D30" stroke-width="10" stroke-linecap="round"/>
-<line x1="215" y1="430" x2="385" y2="385" stroke="#66546C" stroke-width="12" stroke-linecap="round"/>
-<path d="M148 322 L232 300 L244 332 L168 344 Z" fill="#B65D79"/>
-<rect x="335" y="335" width="140" height="72" rx="14" fill="#66546C"/>
-<path d="M378 405 L255 418" stroke="#8D7C93" stroke-width="15" stroke-linecap="round"/>
-<path d="M300 300 C335 248 425 244 488 276 L525 300 L476 336 L330 346 Z" fill="#B65D79"/>
-<path d="M214 322 C240 300 300 300 332 312 L332 340 L224 346 Z" fill="#38283F"/>
-<path d="M480 282 L550 302 L556 348 L500 342 Z" fill="#B65D79"/>
-<circle cx="548" cy="322" r="9" fill="#FFF6E0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<defs>
+ <linearGradient id="bg" x2="800" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#F5EFE7"/><stop offset="1" stop-color="#E8D8CC"/></linearGradient>
+ <linearGradient id="paint" x2=".5" y2="1"><stop stop-color="#E8D8CC"/><stop offset=".4" stop-color="#B65D79"/><stop offset="1" stop-color="#66546C"/></linearGradient>
+ <radialGradient id="shadow"><stop stop-color="#38283F" stop-opacity=".3"/><stop offset="1" stop-color="#38283F" stop-opacity="0"/></radialGradient>
+ <g id="wheel"><circle r="68" stroke="#38283F" stroke-width="20"/><circle r="55" stroke="#66546C" stroke-width="3"/><path d="M0-52 6-8 45-26 12 3 32 42 0 14-32 42-12 3-45-26-6-8Z" fill="#66546C"/><circle r="28" stroke="#E8D8CC" stroke-width="4" stroke-dasharray="3 4"/><circle r="11" fill="#38283F"/></g>
+</defs>
+<path fill="url(#bg)" d="M0 0h800v600H0z"/><path d="M473 108h234v354H473z" fill="#FFFFFF" opacity=".3"/><path d="m99 449 460-313M0 487h800" stroke="#66546C" opacity=".1"/>
+<text x="50" y="64" fill="#66546C" font-size="12" font-family="sans-serif" letter-spacing="5">ZELVORA / OPEN ROAD</text>
+<ellipse cx="405" cy="490" rx="310" ry="34" fill="url(#shadow)"/>
+<use href="#wheel" x="211" y="419"/><use href="#wheel" x="601" y="419"/>
+<path d="m212 419 142-40 100 4m-235 26 76-91 111 97 91-113" stroke="#66546C" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m575 300 32 116m-50-108 31 99" stroke="#E8D8CC" stroke-width="10"/><path d="m556 311 30 96" stroke="#38283F" stroke-width="4"/>
+<path d="m582 298-29-46-50-10m45 13-18-45 14-2 24 54" stroke="#38283F" stroke-width="8" stroke-linecap="round"/>
+<path d="m155 312 81-44 72 31 29 17-88 14-62-9Z" fill="url(#paint)"/><path d="m215 302 103-9 32 24-92 13Z" fill="#38283F"/>
+<path d="M312 305c17-44 79-72 140-57l52 24 41 48-61 15-58-10-61 26-53-46Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m342 286 49-25 52 2" stroke="#F5EFE7" stroke-width="5" opacity=".5"/>
+<path d="m485 299 56-40 39 24 9 53-59 83-108-6 28-73 35-41Z" fill="#38283F"/><path d="m499 312 53-37 24 14-34 55-81 51 21-59Z" fill="url(#paint)"/>
+<path d="m547 276 11-35 28 44" fill="#66546C"/><path d="m548 303 27-10-9 24-21 6Z" fill="#F5EFE7"/>
+<rect x="343" y="339" width="78" height="66" rx="15" fill="#38283F"/><path d="M354 350h51m-51 12h51m-51 12h51m-51 12h51" stroke="#E8D8CC" stroke-width="3" opacity=".6"/>
+<path d="m419 395-20 30-148 11-18-13 110-8m-66-26 39-30" stroke="#66546C" stroke-width="13" stroke-linecap="round"/>
+<path d="m550 374 51-24 44 22" stroke="#B65D79" stroke-width="9" stroke-linecap="round"/>
+<text x="50" y="551" fill="#66546C" font-size="10" font-family="sans-serif" letter-spacing="3">ORIGINAL FLEET ILLUSTRATION</text><path d="M650 548h100" stroke="#B65D79" stroke-width="3"/>
 </svg>

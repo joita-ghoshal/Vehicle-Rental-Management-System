@@ -1,16 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img">
-<rect width="800" height="600" fill="#E8D8CC"/>
-<circle cx="400" cy="300" r="235" fill="#F5EFE7" opacity=".55"/>
-<line x1="0" y1="500" x2="800" y2="500" stroke="#D6C2B2" stroke-width="3"/>
-<ellipse cx="410" cy="500" rx="300" ry="16" fill="#38283F" opacity=".16"/>
-<circle cx="225" cy="448" r="50" fill="#2A1D30"/><circle cx="225" cy="448" r="29" fill="#E8D8CC"/><circle cx="225" cy="448" r="29" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="225" cy="448" r="8" fill="#66546C"/><circle cx="595" cy="448" r="50" fill="#2A1D30"/><circle cx="595" cy="448" r="29" fill="#E8D8CC"/><circle cx="595" cy="448" r="29" fill="none" stroke="#B9A596" stroke-width="3"/><circle cx="595" cy="448" r="8" fill="#66546C"/>
-<line x1="595" y1="448" x2="565" y2="280" stroke="#2A1D30" stroke-width="11" stroke-linecap="round"/>
-<path d="M130 395 C130 320 290 300 335 335 L335 425 L215 432 L150 420 Z" fill="#66546C"/>
-
-<path d="M168 318 C200 296 300 296 335 312 L335 336 L172 342 Z" fill="#38283F"/>
-<rect x="320" y="418" width="170" height="24" rx="12" fill="#66546C"/>
-<path d="M478 440 L520 276 L565 266 L586 306 L568 440 Z" fill="#66546C"/>
-<line x1="540" y1="268" x2="505" y2="232" stroke="#2A1D30" stroke-width="12" stroke-linecap="round"/>
-<circle cx="590" cy="300" r="12" fill="#FFF6E0"/>
-<path d="M545 395 A55 55 0 0 1 645 400" fill="none" stroke="#66546C" stroke-width="10"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+<defs>
+ <linearGradient id="bg" x2="800" y2="600" gradientUnits="userSpaceOnUse"><stop stop-color="#F5EFE7"/><stop offset="1" stop-color="#E8D8CC"/></linearGradient>
+ <linearGradient id="paint" x2=".5" y2="1"><stop stop-color="#E8D8CC"/><stop offset=".35" stop-color="#B65D79"/><stop offset="1" stop-color="#66546C"/></linearGradient>
+ <radialGradient id="shadow"><stop stop-color="#38283F" stop-opacity=".3"/><stop offset="1" stop-color="#38283F" stop-opacity="0"/></radialGradient>
+ <g id="wheel"><circle r="50" fill="#38283F"/><circle r="40" stroke="#66546C" stroke-width="2"/><circle r="29" fill="#E8D8CC"/><circle r="22" fill="#66546C"/><path d="M0-22v44m-19-33 38 22m-38 0 38-22" stroke="#F5EFE7" stroke-width="5"/><circle r="7" fill="#38283F"/></g>
+</defs>
+<path fill="url(#bg)" d="M0 0h800v600H0z"/><path d="M474 109h198v371H474z" fill="#FFFFFF" opacity=".25"/><circle cx="280" cy="229" r="127" stroke="#FFFFFF"/><path d="M50 490h700" stroke="#66546C" opacity=".1"/>
+<text x="50" y="64" fill="#66546C" font-size="12" font-family="sans-serif" letter-spacing="5">ZELVORA / EVERYDAY ESCAPE</text>
+<ellipse cx="407" cy="487" rx="275" ry="30" fill="url(#shadow)"/>
+<use href="#wheel" x="248" y="436"/><use href="#wheel" x="583" y="436"/>
+<path d="m572 295 13 141" stroke="#38283F" stroke-width="12"/>
+<path d="M163 399c-9-52 20-87 85-93l94 14 16 92-61 15-118-10-16-18Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m188 353 83-15 42 13m-124 11 85-12 39 12" stroke="#F5EFE7" stroke-width="3" opacity=".5"/>
+<ellipse cx="255" cy="387" rx="49" ry="29" stroke="#E8D8CC" stroke-width="2" opacity=".5"/>
+<path d="m184 312 24-15h107l31 16-3 15-148 2Z" fill="#38283F"/><path d="m209 307 105 1" stroke="#E8D8CC" stroke-width="2" opacity=".5"/>
+<path d="m337 413 103 4 34-94 34-57 54 4 24 42-16 66-27 50-96 6-111-5Z" fill="url(#paint)" stroke="#66546C" stroke-width="2"/>
+<path d="m488 323 44-36 16 28-20 58-53 47" stroke="#E8D8CC" stroke-width="5" opacity=".45"/>
+<path d="m343 423 101 2m80-151-11-35-39-8m39 7 12-34 12-3" stroke="#38283F" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="544" cy="200" rx="15" ry="9" fill="#66546C"/><path d="m483 228-24-30-17 2" stroke="#66546C" stroke-width="4"/><ellipse cx="437" cy="198" rx="13" ry="8" fill="#66546C"/>
+<ellipse cx="566" cy="281" rx="23" ry="21" fill="#38283F"/><ellipse cx="571" cy="278" rx="16" ry="15" fill="#F5EFE7"/>
+<path d="M535 404c24-31 71-31 99-1" stroke="#B65D79" stroke-width="12" stroke-linecap="round"/><path d="m213 431 89 6" stroke="#66546C" stroke-width="10" stroke-linecap="round"/>
+<text x="50" y="551" fill="#66546C" font-size="10" font-family="sans-serif" letter-spacing="3">ORIGINAL FLEET ILLUSTRATION</text><path d="M650 548h100" stroke="#B65D79" stroke-width="3"/>
 </svg>

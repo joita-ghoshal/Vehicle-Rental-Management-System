@@ -1,30 +1,59 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import Logo from './Logo'
+import { Alert } from './Feedback'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
   const [open, setOpen] = useState(false)
+  const [logoutError, setLogoutError] = useState('')
+  const [loggingOut, setLoggingOut] = useState(false)
+  const toggle = useRef(null)
+  const header = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => { setOpen(false) }, [location.pathname])
+  useEffect(() => {
+    if (!open) return
+    const escape = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggle.current?.focus()
+      }
+    }
+    const outside = (event) => { if (!header.current?.contains(event.target)) setOpen(false) }
+    document.addEventListener('keydown', escape)
+    document.addEventListener('pointerdown', outside)
+    return () => {
+      document.removeEventListener('keydown', escape)
+      document.removeEventListener('pointerdown', outside)
+    }
+  }, [open])
 
   async function handleLogout() {
-    await logout()
-    navigate('/')
+    setLogoutError('')
+    setLoggingOut(true)
+    try {
+      await logout()
+      navigate('/')
+    } catch (err) {
+      setLogoutError(`Could not log out. ${err.message} Please try again.`)
+    } finally {
+      setLoggingOut(false)
+    }
   }
 
   const link = ({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')
 
   return (
-    <header className="navbar">
+    <header className="navbar" ref={header}>
       <div className="container navbar-inner">
         <Link to="/" className="navbar-brand" aria-label="ZELVORA home">
           <Logo />
         </Link>
-        <button className="nav-toggle" aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
+        <button ref={toggle} className="nav-toggle" aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>
           <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
           <span className="nav-toggle-bars" aria-hidden="true" />
         </button>
@@ -45,7 +74,7 @@ export default function Navbar() {
           {user ? (
             <>
               <span className="nav-user">Hi, {user.name.split(' ')[0]}</span>
-              <button className="btn btn-light btn-sm" onClick={handleLogout}>Log out</button>
+              <button className="btn btn-light btn-sm" disabled={loggingOut} onClick={handleLogout}>{loggingOut ? 'Logging out…' : 'Log out'}</button>
             </>
           ) : (
             <>
@@ -55,6 +84,7 @@ export default function Navbar() {
           )}
         </nav>
       </div>
+      {logoutError && <div className="container"><Alert tone="error" onClose={() => setLogoutError('')}>{logoutError}</Alert></div>}
     </header>
   )
 }

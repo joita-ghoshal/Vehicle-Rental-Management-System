@@ -2,7 +2,7 @@
 import datetime
 
 from database import run_query
-from utils import ApiError, parse_date, raise_if_errors, text_field
+from utils import ApiError, money_value, parse_date, raise_if_errors, text_field, whole_number
 
 CATEGORIES = ("Car", "Bike", "Scooter")
 FUEL_TYPES = ("Petrol", "Diesel", "Electric", "CNG", "Hybrid")
@@ -62,24 +62,24 @@ def validate_vehicle_payload(data):
         errors["status"] = "Choose Active, Inactive or Maintenance."
 
     try:
-        seats = int(data.get("seats"))
-        if not 1 <= seats <= 12:
-            raise ValueError
+        seats = whole_number(data.get("seats"), maximum=12)
     except (TypeError, ValueError):
         seats = None
         errors["seats"] = "Seats must be a whole number from 1 to 12."
     try:
-        price = round(float(data.get("price_per_day")), 2)
-        if not 0 < price <= 1000000:
+        price = money_value(data.get("price_per_day"))
+        if price <= 0:
             raise ValueError
     except (TypeError, ValueError):
         price = None
         errors["price_per_day"] = "Enter a price greater than 0."
 
     image = data.get("image_url")
+    if image is not None and not isinstance(image, str):
+        errors["image_url"] = "Use an image URL or leave this field empty."
     image = image.strip() if isinstance(image, str) else ""
     if not image:
-        image = DEFAULT_IMAGES.get(category, DEFAULT_IMAGES["Car"])
+        image = DEFAULT_IMAGES.get(category, DEFAULT_IMAGES["Car"]) if isinstance(category, str) else DEFAULT_IMAGES["Car"]
     elif len(image) > 500 or not (image.startswith("https://") or image.startswith("http://") or image.startswith("/images/")):
         errors["image_url"] = "Use an http(s) link or a path that starts with /images/."
 
@@ -115,14 +115,18 @@ def list_vehicles(ctx):
             raise ApiError(400, "Unknown category.")
         where.append("v.category = %s")
         where_params.append(q["category"])
+    prices = {}
     for key, op in (("min_price", ">="), ("max_price", "<=")):
         if q.get(key):
             try:
-                value = float(q[key])
-            except ValueError:
-                raise ApiError(400, "Price filters must be numbers.")
+                value = money_value(q[key])
+            except (ValueError, TypeError):
+                raise ApiError(400, "Price filters must be finite numbers between 0 and 1000000.")
+            prices[key] = value
             where.append(f"v.price_per_day {op} %s")
             where_params.append(value)
+    if len(prices) == 2 and prices['min_price'] > prices['max_price']:
+        raise ApiError(400, "Minimum price cannot exceed maximum price.")
     if q.get("available") == "1":
         where.append(f"NOT {CONFLICT_SQL}")
         where_params += [ret, pickup]
@@ -133,6 +137,7 @@ def list_vehicles(ctx):
     rows = run_query(sql, [ret, pickup] + where_params)
     for row in rows:
         row["is_booked"] = bool(row["is_booked"])
+        row["registration_number"] = "Hidden for privacy"
     return 200, {"vehicles": rows}
 
 
@@ -141,6 +146,8 @@ def get_vehicle(ctx):
                         (ctx.params["id"],), one=True)
     if not vehicle:
         raise ApiError(404, "This vehicle could not be found.")
+    # Full registration is retained in authorized bookings and admin APIs.
+    vehicle["registration_number"] = "Hidden for privacy"
     vehicle["booked_ranges"] = run_query(
         "SELECT pickup_date, return_date FROM bookings WHERE vehicle_id = %s AND booking_status = 'Confirmed' "
         "AND return_date >= CURDATE() ORDER BY pickup_date", (vehicle["id"],))
@@ -154,7 +161,7 @@ def check_availability(ctx):
         raise ApiError(404, "This vehicle could not be found.")
     pickup, ret = validate_rental_dates(ctx.query.get("pickup"), ctx.query.get("return"))
     days = rental_days(pickup, ret)
-    total = round(float(vehicle["price_per_day"]) * days, 2)
+    total = vehicle["price_per_day"] * days
     result = {"rental_days": days, "total_amount": total, "available": True, "reason": ""}
     if vehicle["status"] != "Active":
         result.update(available=False, reason=f"This vehicle is currently {vehicle['status'].lower()} and cannot be booked.")
