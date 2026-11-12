@@ -5,7 +5,7 @@
 **Repository:** https://github.com/joita-ghoshal/Vehicle-Rental-Management-System  
 **Current live demo:** https://joita-ghoshal.github.io/Vehicle-Rental-Management-System/  
 **Roadmap last updated:** 12 November 2026  
-**Current phase:** Phase 7 — In Progress; local production preparation complete, commit/push pending approval  
+**Current phase:** Phase 7 — Completed and pushed; Phase 8 awaiting explicit approval  
 **Next phase:** Phase 8 — Requires explicit deployment approval and hosting access
 
 **Status legend:** `Pending` · `In Progress` · `Completed` · `Blocked`
@@ -24,10 +24,10 @@
 | 4 | Vehicle image/SVG repair and professional UI/UX redesign | **Completed locally** | Phase 3 | Completed; Phase 5 subsequently approved |
 | 5 | Local full-stack integration and comprehensive testing | **Completed locally** | Phases 3, 4 | Completed; Phase 6 subsequently approved |
 | 6 | Local demonstration and user acceptance | **Completed** | Phase 5 | Agent-operated browser QA passed in Chrome and Edge; Phase 7 still requires explicit approval |
-| 7 | GitHub synchronisation and production deployment preparation | **In Progress** | Phase 6 | Local preparation complete; commit/push pending explicit approval |
+| 7 | GitHub synchronisation and production deployment preparation | **Completed** | Phase 6 | Pushed to `main` as `aa39313`; Phase 8 awaits separate approval |
 | 8 | Production deployment, live verification and handover | Pending | Phase 7 + hosting access | User approval required |
 
-**Totals:** 8 phases · 6 completed · 1 in progress · 1 pending · 0 blocked.
+**Totals:** 8 phases · 7 completed · 1 pending · 0 blocked.
 
 ---
 
@@ -706,7 +706,7 @@ Phase 8 (production deployment + live verification + handover)
 - [x] Add environment variable documentation; no secrets in Git.
 - [x] Apply/verify database migrations and demo seed on a staging database if possible. *(Local demo DB migration/seed verified; no hosted staging created.)*
 - [x] Update README/SETUP for production.
-- [ ] Review all changes with the owner; commit with meaningful messages and push **only after approval**. *(Local commit/push pending explicit approval.)*
+- [x] Review all changes with the owner; commit with meaningful messages and push **only after approval**. *(Approved; committed and pushed as `aa39313`.)*
 - [x] Do not force-push, rewrite history or create a replacement repository.
 - [x] Update `step.md`.
 
@@ -716,7 +716,7 @@ Phase 8 (production deployment + live verification + handover)
 
 **Completion criteria:** Hosting plan approved; production config committed/pushed with approval; no secrets exposed; deployment steps documented; `step.md` updated.
 
-**Current result:** **Prepared locally 12 November 2026; commit/push pending approval.** Option A (single-origin Render Docker + TiDB Cloud Starter free MySQL-compatible) recommended; Aiven's free MySQL is excluded because it retires 21 December 2026. Production config, CORS/cookie controls, SPA serving, security headers, optional DB sessions, migrations, Docker/Render files and `DEPLOYMENT.md` are in place. Verified: `phase7` 13/13, production-like smoke 16/16 (including session persistence across restart), regression 86/86, Main Admin 125/125, hardening 47/47, safety 9/9, recovery 5/5, frontend 15/15, root and repository-base builds, secret scan clean. No push or deployment has occurred.
+**Current result:** **Completed and pushed 12 November 2026 (`aa39313`).** Option A (single-origin Render Docker + TiDB Cloud Starter free MySQL-compatible) recommended; Aiven's free MySQL is excluded because it retires 21 December 2026. Production config, CORS/cookie controls, SPA serving, security headers, optional DB sessions, migrations, Docker/Render files and `DEPLOYMENT.md` are in place. Verified: `phase7` 13/13, production-like smoke 16/16 (including session persistence across restart), regression 86/86, Main Admin 125/125, hardening 47/47, safety 9/9, recovery 5/5, frontend 15/15, root and repository-base builds, secret scan clean. No deployment has occurred.
 
 ---
 
@@ -923,7 +923,7 @@ These are dedicated local demo credentials, not real customer or administrator l
 | 11 Nov 2026 | Phase 6 | Acceptance process revised | Owner instructed complete agent-operated real-browser QA, inventory, fixes and report; no owner testing required; no Phase 7/push/deployment approval |
 | 12 Nov 2026 | Phase 6 | Completed | Chrome dev + Edge production-preview QA each passed 531/531 actions, 247/247 controls, 18 routes, 0 unexpected errors; BUG-33 regression passed; demo data restored and private fingerprint unchanged; no push/deployment |
 | 12 Nov 2026 | Phase 7 | Approved to start | Owner replied “yes” to the Phase 7 approval request; local production preparation only, no deployment or paid service |
-| — | Phase 7 | Commit/push awaiting approval | Local configuration, documentation and tests are complete; no commit/push or deployment has occurred |
+| 12 Nov 2026 | Phase 7 | Completed | Owner approved the push; `aa39313` pushed to `main`; no deployment or paid service |
 | — | Phase 8 | Awaiting approval | Requires Phase 7 push plus owner-provided hosting access and explicit deployment approval |
 
 ---
@@ -1291,7 +1291,7 @@ Deployment Preparation?**
 
 ## Phase 7 Preparation Record — Production Deployment Preparation
 
-**Status:** Prepared locally, 12 November 2026. Commit/push and Phase 8 remain blocked on explicit approval.
+**Status:** Completed and pushed 12 November 2026 (`aa39313`). Phase 8 remains blocked on explicit approval.
 
 **Authorization:** Owner replied “yes” to the Phase 7 start request. This authorized local preparation only;
 no deployment, paid service or production data change was performed.
@@ -1355,12 +1355,12 @@ baseline (5 users / 12 vehicles / 1 booking, identical SHA-256 hashes).
 
 ### Limits and next gate
 
-- Nothing is committed, pushed or deployed yet. No hosted staging database was created; migrations were
-  verified against the local synthetic demo database.
+- Committed and pushed to `main` as `aa39313`; nothing is deployed. No hosted staging database was created;
+  migrations were verified against the local synthetic demo database.
 - Render free sleep, Python's built-in server, TiDB foreign-key differences, free-tier quotas and production
   monitoring remain documented limitations.
-- **Next:** review this record and explicitly approve the local commit and GitHub push. After that, Phase 8
-  requires hosting access and a separate deployment approval.
+- **Next:** Phase 8 (deployment) requires owner-provided hosting access and a separate explicit deployment
+  approval; nothing has been deployed.
 
 ---
 
