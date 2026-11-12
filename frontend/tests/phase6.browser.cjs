@@ -140,7 +140,7 @@ async function book(offset, days = 2, p = customer, expectedStatus = 201) {
   await requestClick(p, button(p, 'Check availability'), `/api/vehicles/${vehicleId}/availability`, 'GET', 200, async data => {
     assert.equal(data.available, true)
     assert.equal(data.rental_days, days)
-    assert.equal(data.total_amount, Number((1111.11 * days).toFixed(2)))
+    assert.equal(data.total_amount, 1111 * days)
     await p.locator('.quote').waitFor()
     assert.ok((await p.locator('.quote').innerText()).includes('Pay at Pickup'))
   })
@@ -354,7 +354,7 @@ async function save() {
     await click(admin, button(admin, 'Cancel'), 'Cancel returns to fleet without adding a vehicle', async () => admin.waitForURL(BASE + '/admin/vehicles'))
     await click(admin, admin.getByRole('link', { name: 'Add vehicle', exact: true }), 'Add form opens', async () => admin.waitForURL(BASE + '/admin/vehicles/new'))
     await click(admin, button(admin, 'Add vehicle'), 'Required fields show validation', async () => assert.ok(await admin.locator('[aria-invalid="true"]').count() >= 6))
-    for (const [id, value] of Object.entries({ name, brand: 'Synthetic', model: 'P6', registration_number: registration, seats: '5', price_per_day: '1111.11', image_url: 'javascript:bad', description: 'Temporary synthetic browser QA vehicle only.' })) await fill(admin, id, value)
+    for (const [id, value] of Object.entries({ name, brand: 'Synthetic', model: 'P6', registration_number: registration, seats: '5', price_per_day: '1111', image_url: 'javascript:bad', description: 'Temporary synthetic browser QA vehicle only.' })) await fill(admin, id, value)
     await click(admin, button(admin, 'Add vehicle'), 'Unsafe image URL is rejected', async () => assert.equal(await admin.locator('#image_url').getAttribute('aria-invalid'), 'true'))
     for (const id of ['category', 'fuel_type', 'transmission', 'status']) {
       for (const value of await admin.locator('#' + id + ' option').allTextContents()) await select(admin, admin.locator('#' + id), value)
@@ -364,7 +364,7 @@ async function save() {
     await click(admin, button(admin, 'Add vehicle'), 'Fractional seat count is rejected', async () => assert.equal(await admin.locator('#seats').getAttribute('aria-invalid'), 'true'))
     await fill(admin, 'seats', '5'); await fill(admin, 'price_per_day', '-1')
     await click(admin, button(admin, 'Add vehicle'), 'Negative price is rejected', async () => assert.equal(await admin.locator('#price_per_day').getAttribute('aria-invalid'), 'true'))
-    await fill(admin, 'price_per_day', '1111.11')
+    await fill(admin, 'price_per_day', '1111')
     expectedFailure = true
     await fill(admin, 'image_url', '/images/phase6-intentionally-missing.svg')
     await admin.locator('.form-preview[data-fallback="true"] img').waitFor(); await pause(admin)
@@ -373,7 +373,7 @@ async function save() {
     expectedFailure = false
     const added = await requestClick(admin, button(admin, 'Add vehicle'), '/api/admin/vehicles', 'POST', 201, async () => admin.waitForURL(BASE + '/admin/vehicles'))
     vehicleId = added.vehicle.id
-    assert.equal(sql().vehicle.price_per_day, 1111.11)
+    assert.equal(sql().vehicle.price_per_day, 1111)
     await dismiss(admin)
     await click(admin, vehicleRow().getByRole('link', { name: 'Edit' }), 'Edit form opens with saved values', async () => admin.waitForURL(`${BASE}/admin/vehicles/${vehicleId}/edit`))
     await pause(admin)
@@ -417,7 +417,7 @@ async function save() {
     }
     // Duplicate registration is rejected by the real backend.
     await go(admin, '/admin/vehicles/new')
-    for (const [id, value] of Object.entries({ name: 'TEST Duplicate Phase6', brand: 'Synthetic', model: 'P6', registration_number: registration, price_per_day: '1111.11', description: 'Temporary duplicate validation only.' })) await fill(admin, id, value)
+    for (const [id, value] of Object.entries({ name: 'TEST Duplicate Phase6', brand: 'Synthetic', model: 'P6', registration_number: registration, price_per_day: '1111', description: 'Temporary duplicate validation only.' })) await fill(admin, id, value)
     expectedFailure = true
     await requestClick(admin, button(admin, 'Add vehicle'), '/api/admin/vehicles', 'POST', 409)
     assert.equal(await admin.locator('#registration_number').getAttribute('aria-invalid'), 'true')
@@ -526,7 +526,7 @@ async function save() {
     const evidence = sql()
     assert.equal(evidence.bookings.length, 6)
     assert.deepEqual(evidence.bookings.map(b => b.booking_status), ['Completed', 'Rejected', 'Cancelled', 'Cancelled', 'Cancelled', 'Rejected'])
-    assert.equal(evidence.bookings[0].total_amount, 3333.33)
+    assert.equal(evidence.bookings[0].total_amount, 3333)
     await stats()
     await go(admin, '/admin/customers')
     assert.ok(await admin.getByRole('cell', { name: email, exact: true }).isVisible())

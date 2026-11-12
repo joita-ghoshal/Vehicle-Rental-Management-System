@@ -72,7 +72,7 @@ def validate_vehicle_payload(data):
             raise ValueError
     except (TypeError, ValueError):
         price = None
-        errors["price_per_day"] = "Enter a price greater than 0."
+        errors["price_per_day"] = "Enter a whole rupee price greater than 0."
 
     image = data.get("image_url")
     if image is not None and not isinstance(image, str):
@@ -121,7 +121,7 @@ def list_vehicles(ctx):
             try:
                 value = money_value(q[key])
             except (ValueError, TypeError):
-                raise ApiError(400, "Price filters must be finite numbers between 0 and 1000000.")
+                raise ApiError(400, "Price filters must be whole rupee amounts between 0 and 1000000.")
             prices[key] = value
             where.append(f"v.price_per_day {op} %s")
             where_params.append(value)
@@ -161,7 +161,7 @@ def check_availability(ctx):
         raise ApiError(404, "This vehicle could not be found.")
     pickup, ret = validate_rental_dates(ctx.query.get("pickup"), ctx.query.get("return"))
     days = rental_days(pickup, ret)
-    total = vehicle["price_per_day"] * days
+    total = int(vehicle["price_per_day"]) * days
     result = {"rental_days": days, "total_amount": total, "available": True, "reason": ""}
     if vehicle["status"] != "Active":
         result.update(available=False, reason=f"This vehicle is currently {vehicle['status'].lower()} and cannot be booked.")

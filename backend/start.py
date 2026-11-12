@@ -9,7 +9,7 @@ import runpy
 import sys
 
 from config import SESSION_STORE, STATIC_DIR
-from migrations import ensure_is_demo_column, ensure_sessions_table
+from migrations import ensure_integer_money_columns, ensure_is_demo_column, ensure_sessions_table
 
 
 def main():
@@ -21,6 +21,7 @@ def main():
         )
     if os.environ.get("ZELVORA_AUTO_MIGRATE", "0") == "1":
         ensure_is_demo_column(verbose=False)
+        ensure_integer_money_columns(verbose=False)
         ensure_sessions_table(verbose=False)
         print("Database migrations applied.")
     if SESSION_STORE == "db":

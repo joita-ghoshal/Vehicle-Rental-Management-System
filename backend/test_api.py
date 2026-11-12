@@ -225,8 +225,8 @@ try:
     after = admin.call("GET", "/api/admin/dashboard")[1]["summary"]
     check("Dashboard: completed count +1, revenue +3600", after["completed_bookings"] == before["completed_bookings"] + 1 and after["completed_revenue"] == before["completed_revenue"] + 3600, (before, after))
     db = run_query("SELECT COUNT(*) AS n, COALESCE(SUM(total_amount),0) AS rev FROM bookings WHERE booking_status='Completed'", one=True)
-    check("Dashboard totals match direct SQL", after["completed_bookings"] == db["n"] and after["completed_revenue"] == float(db["rev"]) and after["total_bookings"] == run_query("SELECT COUNT(*) n FROM bookings", one=True)["n"], after)
-    check("Pending/rejected/cancelled not counted as revenue", after["completed_revenue"] == float(db["rev"]))
+    check("Dashboard totals match direct SQL", after["completed_bookings"] == db["n"] and after["completed_revenue"] == int(db["rev"]) and after["total_bookings"] == run_query("SELECT COUNT(*) n FROM bookings", one=True)["n"], after)
+    check("Pending/rejected/cancelled not counted as revenue", after["completed_revenue"] == int(db["rev"]))
 
     print("\n== Concurrent approvals ==")
     bike = ids["bike"]

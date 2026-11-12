@@ -67,7 +67,7 @@ function date(offset) {
     await page.locator('#ret').fill(date(offset + 1))
     await page.getByRole('button', { name: 'Check availability' }).click()
     await page.locator('.quote').waitFor()
-    check('Authoritative two-inclusive-day quote and Pay at Pickup', (await page.locator('.quote').innerText()).includes('2,469.12') && (await page.locator('.quote').innerText()).includes('Pay at Pickup'))
+    check('Authoritative two-inclusive-day quote and Pay at Pickup', (await page.locator('.quote').innerText()).includes('2,468') && (await page.locator('.quote').innerText()).includes('Pay at Pickup'))
     const data = await responseAfter(page, () => page.getByRole('button', { name: 'Confirm booking request' }).click(), '/api/bookings', 'POST', 201)
     await page.waitForURL(BASE + '/my-bookings')
     await card(data.booking.id).getByText('Pending', { exact: true }).waitFor()
@@ -82,7 +82,7 @@ function date(offset) {
     const before = await api(admin, 'GET', '/api/admin/dashboard')
     const fixture = await api(admin, 'POST', '/api/admin/vehicles', {
       name: vehicleName, brand: 'Synthetic', model: 'P5', category: 'Car', registration_number: `P5 ${run}`,
-      fuel_type: 'Petrol', transmission: 'Manual', seats: 5, price_per_day: '1234.56',
+      fuel_type: 'Petrol', transmission: 'Manual', seats: 5, price_per_day: '1234',
       image_url: '/images/car-sedan.svg', description: 'Synthetic temporary Phase 5 fixture.', status: 'Active',
     })
     vehicleId = fixture.vehicle.id
@@ -208,7 +208,7 @@ function date(offset) {
     await card(completed).getByText('Paid', { exact: true }).waitFor()
     await card(rejected).getByText('Rejected', { exact: true }).waitFor()
     const after = await api(admin, 'GET', '/api/admin/dashboard')
-    check('Rejection/completion/payment reach the customer and completed-only revenue', after.summary.completed_revenue === before.summary.completed_revenue + 2469.12)
+    check('Rejection/completion/payment reach the customer and completed-only revenue', after.summary.completed_revenue === before.summary.completed_revenue + 2468)
     await page.screenshot({ path: path.join(artifacts, 'customer-history.png'), fullPage: true })
 
     faults = true

@@ -33,6 +33,52 @@ def ensure_is_demo_column(verbose=True):
         conn.close()
 
 
+def _column_type(cur, table, column):
+    cur.execute(
+        "SELECT DATA_TYPE FROM information_schema.COLUMNS "
+        "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s AND COLUMN_NAME = %s LIMIT 1",
+        (table, column),
+    )
+    row = cur.fetchone()
+    return row[0].lower() if row else None
+
+
+def ensure_integer_money_columns(verbose=True):
+    """Convert legacy DECIMAL money columns to whole-rupee INT without losing rows.
+
+    Existing fractional values (if any) are rounded to the nearest rupee before
+    the column type changes. All rows and constraints are kept.
+    """
+    money_columns = (("vehicles", "price_per_day"), ("bookings", "total_amount"))
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        changed = False
+        for table, column in money_columns:
+            data_type = _column_type(cur, table, column)
+            if data_type is None:
+                raise RuntimeError(f"Missing money column {table}.{column}.")
+            if data_type in ("tinyint", "smallint", "mediumint", "int", "bigint"):
+                if verbose:
+                    print(f"{table}.{column} already whole-rupee integer - nothing to do.")
+                continue
+            cur.execute(f"SELECT COUNT(*) FROM {table} WHERE {column} <> FLOOR({column})")
+            fractional = cur.fetchone()[0]
+            if fractional:
+                cur.execute(f"UPDATE {table} SET {column} = ROUND({column})")
+                if verbose:
+                    print(f"Rounded {fractional} fractional {table}.{column} value(s) to whole rupees.")
+            cur.execute(f"ALTER TABLE {table} MODIFY {column} INT UNSIGNED NOT NULL")
+            changed = True
+            if verbose:
+                print(f"Converted {table}.{column} to whole-rupee INT.")
+        if changed:
+            conn.commit()
+        return changed
+    finally:
+        conn.close()
+
+
 def ensure_sessions_table(verbose=True):
     """Create the optional persistent-session table. Returns True if created."""
     conn = get_connection()

@@ -48,7 +48,7 @@ def create_booking(ctx):
             "AND pickup_date <= %s AND return_date >= %s LIMIT 1", (user["id"], vehicle_id, ret, pickup))
         if cur.fetchone():
             raise ApiError(409, "You already have a booking for this vehicle on overlapping dates.")
-        total = vehicle["price_per_day"] * days
+        total = int(vehicle["price_per_day"]) * days
         cur.execute(
             "INSERT INTO bookings (user_id, vehicle_id, pickup_date, return_date, total_amount) VALUES (%s, %s, %s, %s, %s)",
             (user["id"], vehicle_id, pickup, ret, total))

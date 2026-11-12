@@ -265,7 +265,7 @@ check("Dashboard revenue increased by the completed booking total",
       after["completed_revenue"] == dashboard_before["completed_revenue"] + booking_total,
       (dashboard_before, after, booking_total))
 db = run_query("SELECT COUNT(*) AS n, COALESCE(SUM(total_amount),0) AS rev FROM bookings WHERE booking_status='Completed'", one=True)
-check("Dashboard totals match direct SQL", after["completed_bookings"] == db["n"] and after["completed_revenue"] == float(db["rev"]), (after, db))
+check("Dashboard totals match direct SQL", after["completed_bookings"] == db["n"] and after["completed_revenue"] == int(db["rev"]), (after, db))
 
 s, r = temp.call("POST", "/api/bookings", {"vehicle_id": vehicle_id, "pickup_date": d(40), "return_date": d(41)})
 check("Third booking created for archive protection test", s == 201, r)

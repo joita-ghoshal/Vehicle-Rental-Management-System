@@ -25,8 +25,8 @@ export default function Vehicles() {
 
   function validate() {
     const e = {}
-    if (form.min_price && (Number(form.min_price) < 0 || Number.isNaN(Number(form.min_price)))) e.min_price = 'Enter a number of 0 or more.'
-    if (form.max_price && (Number(form.max_price) < 0 || Number.isNaN(Number(form.max_price)))) e.max_price = 'Enter a number of 0 or more.'
+    if (form.min_price && (!Number.isInteger(Number(form.min_price)) || Number(form.min_price) < 0)) e.min_price = 'Enter a whole rupee amount of 0 or more.'
+    if (form.max_price && (!Number.isInteger(Number(form.max_price)) || Number(form.max_price) < 0)) e.max_price = 'Enter a whole rupee amount of 0 or more.'
     if (!e.min_price && !e.max_price && form.min_price && form.max_price && Number(form.min_price) > Number(form.max_price)) e.max_price = 'Maximum must be above the minimum.'
     if (form.pickup || form.return || form.available) {
       if (!form.pickup) e.pickup = 'Choose a pickup date.'
@@ -91,10 +91,10 @@ export default function Vehicles() {
           </Field>
           <div className="field-row">
             <Field label="Min price (₹/day)" name="min_price" error={errors.min_price}>
-              <input id="min_price" type="number" min="0" inputMode="numeric" value={form.min_price} onChange={set('min_price')} />
+              <input id="min_price" type="number" min="0" step="1" inputMode="numeric" value={form.min_price} onChange={set('min_price')} />
             </Field>
             <Field label="Max price (₹/day)" name="max_price" error={errors.max_price}>
-              <input id="max_price" type="number" min="0" inputMode="numeric" value={form.max_price} onChange={set('max_price')} />
+              <input id="max_price" type="number" min="0" step="1" inputMode="numeric" value={form.max_price} onChange={set('max_price')} />
             </Field>
           </div>
           <div className="field-row">

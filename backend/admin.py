@@ -27,6 +27,7 @@ def dashboard(ctx):
             "COALESCE(SUM(CASE WHEN booking_status='Completed' THEN total_amount ELSE 0 END),0) AS completed_revenue "
             "FROM bookings")
         summary = cur.fetchone()
+        summary["completed_revenue"] = int(summary["completed_revenue"] or 0)
         cur.execute(
             f"SELECT {BOOKING_COLUMNS}, u.name AS customer_name FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id "
             "JOIN users u ON u.id = b.user_id ORDER BY b.created_at DESC, b.id DESC LIMIT 5")

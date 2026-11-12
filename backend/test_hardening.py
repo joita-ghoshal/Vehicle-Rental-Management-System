@@ -35,11 +35,14 @@ class ValidationTests(ManagedTestCase):
                 whole_number(value)
         self.assertEqual(whole_number(' 005 '), 5)
 
-    def test_money_is_finite_and_bounded(self):
-        for value in (True, None, [], {}, 'NaN', 'sNaN', 'Infinity', float('inf'), '-1', '1000001', '1e999999'):
+    def test_money_is_whole_rupees_only(self):
+        for value in (True, False, None, [], {}, 'NaN', 'sNaN', 'Infinity', float('inf'),
+                      2.5, 2.0, Decimal('2.68'), '-1', '1000001', '1e999999', '2.675', '500.00'):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 money_value(value)
-        self.assertEqual(money_value('2.675'), Decimal('2.68'))
+        self.assertEqual(money_value('500'), 500)
+        self.assertEqual(money_value(500), 500)
+        self.assertEqual(money_value(' 005 '), 5)
 
     def test_date_format_is_strict(self):
         for value in ('20261110', '2026-W46-2', '2026-02-30', [], True, '2026-1-01'):

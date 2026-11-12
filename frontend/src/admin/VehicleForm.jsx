@@ -27,7 +27,8 @@ export default function VehicleForm({ vehicle, vehicleId }) {
     if (!form.registration_number.trim()) e.registration_number = 'Registration number is required.'
     const seats = Number(form.seats)
     if (!Number.isInteger(seats) || seats < 1 || seats > 12) e.seats = 'Seats must be a whole number from 1 to 12.'
-    if (!(Number(form.price_per_day) > 0)) e.price_per_day = 'Enter a price greater than 0.'
+    const price = Number(form.price_per_day)
+    if (!Number.isInteger(price) || price <= 0) e.price_per_day = 'Enter a whole rupee price greater than 0.'
     if (form.description.trim().length < 10) e.description = 'Write at least 10 characters.'
     const image = form.image_url.trim()
     if (image && !/^(https?:\/\/|\/images\/)/.test(image)) e.image_url = 'Use an http(s) link or a path that starts with /images/.'
@@ -90,7 +91,7 @@ export default function VehicleForm({ vehicle, vehicleId }) {
           <input id="seats" type="number" min="1" max="12" value={form.seats} onChange={set('seats')} />
         </Field>
         <Field label="Price per day (₹)" name="price_per_day" error={errors.price_per_day}>
-          <input id="price_per_day" type="number" min="1" step="0.01" value={form.price_per_day} onChange={set('price_per_day')} />
+          <input id="price_per_day" type="number" min="1" step="1" inputMode="numeric" value={form.price_per_day} onChange={set('price_per_day')} />
         </Field>
       </div>
       <Field label="Status" name="status" error={errors.status} hint="Only Active vehicles can receive new bookings.">

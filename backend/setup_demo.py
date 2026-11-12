@@ -5,7 +5,7 @@ import mysql.connector
 
 from config import DB_CONFIG, DEMO_DB_NAME, DEMO_MODE
 from demo_safety import require_demo_database
-from migrations import ensure_sessions_table
+from migrations import ensure_integer_money_columns, ensure_sessions_table
 
 
 def execute_sql(cur, path):
@@ -38,6 +38,7 @@ def main():
             # Source-controlled, fictitious vehicles only; no private DB reads.
             execute_sql(cur, root / "database" / "sample_data.sql")
             conn.commit()
+    ensure_integer_money_columns(verbose=False)
     ensure_sessions_table(verbose=False)
     from seed_demo import main as seed
     seed()

@@ -11,7 +11,6 @@ import urllib.error
 import urllib.request
 import uuid
 from concurrent.futures import ThreadPoolExecutor
-from decimal import Decimal
 from http.cookiejar import CookieJar
 
 from auth import hash_password
@@ -79,7 +78,7 @@ class MysqlIntegrationTests(unittest.TestCase):
     def payload(self, **changes):
         value = {'name': 'TEST Phase3 Car', 'brand': 'Synthetic', 'model': 'P3', 'category': 'Car',
                  'registration_number': 'P3 ' + uuid.uuid4().hex[:20].upper(), 'fuel_type': 'Petrol',
-                 'transmission': 'Manual', 'seats': 5, 'price_per_day': '999.99', 'image_url': '',
+                 'transmission': 'Manual', 'seats': 5, 'price_per_day': '999', 'image_url': '',
                  'description': 'Fictional vehicle for temporary Phase 3 tests.', 'status': 'Active'}
         value.update(changes)
         return value
@@ -167,7 +166,7 @@ class MysqlIntegrationTests(unittest.TestCase):
 
     def test_seats_and_prices_reject_malformed_values_without_500(self):
         for field, values in {'seats': [True, 2.5, 5.0, [], {}, 13],
-                              'price_per_day': [True, [], {}, 'nan', 'inf', '1e999', '0.001', '1000001'],
+                              'price_per_day': [True, [], {}, 2.5, 2.0, 'nan', 'inf', '1e999', '0.001', '999.99', '1000001'],
                               'category': [[], {}], 'image_url': [[], 123]}.items():
             for value in values:
                 with self.subTest(field=field, value=value):
@@ -180,14 +179,15 @@ class MysqlIntegrationTests(unittest.TestCase):
             with self.subTest(query=query):
                 self.assertEqual(Client().call('GET', '/api/vehicles?' + query)[0], 400)
 
-    def test_exact_money_rounding_and_server_total(self):
+    def test_whole_rupee_total_and_server_calculation(self):
         self.assertEqual(self.main.call('PUT', f'/api/admin/vehicles/{self.vehicle}',
-                         {**self.vehicle_payload, 'price_per_day': '2.675'})[0], 200)
+                         {**self.vehicle_payload, 'price_per_day': '250'})[0], 200)
         bid = self.book(start=10, end=12)
         row = run_query('SELECT total_amount FROM bookings WHERE id=%s', (bid,), one=True)
-        self.assertEqual(row['total_amount'], Decimal('8.04'))
+        self.assertEqual(row['total_amount'], 750)
+        self.assertIsInstance(row['total_amount'], int)
         status, data = Client().call('GET', f'/api/vehicles/{self.vehicle}/availability?pickup={date(10)}&return={date(12)}')
-        self.assertEqual((status, data['total_amount']), (200, 8.04))
+        self.assertEqual((status, data['total_amount']), (200, 750))
 
     def test_rental_date_boundaries_today_60_days_and_one_year(self):
         for start, end, expected in ((0, 0, 200), (0, 59, 200), (0, 60, 400), (365, 365, 200), (366, 366, 400), (-1, 0, 400), (2, 1, 400)):

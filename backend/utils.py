@@ -20,7 +20,9 @@ class JsonEncoder(json.JSONEncoder):
         if isinstance(o, (datetime.date, datetime.datetime)):
             return o.isoformat()
         if isinstance(o, decimal.Decimal):
-            return float(o)
+            # Money is stored and calculated as whole rupees. Aggregates such as
+            # SUM(INT) arrive as Decimal, so emit them as integers, never floats.
+            return int(o)
         return super().default(o)
 
 
@@ -42,19 +44,22 @@ def whole_number(value, minimum=1, maximum=4294967295):
     return number
 
 
-def money_value(value, minimum=decimal.Decimal('0'), maximum=decimal.Decimal('1000000')):
-    """Finite, bounded money values with deterministic two-decimal rounding."""
-    if isinstance(value, bool) or not isinstance(value, (int, float, str, decimal.Decimal)):
-        raise ValueError("Expected a price")
-    if len(str(value)) > 64:
-        raise ValueError("Price too long")
-    try:
-        number = decimal.Decimal(str(value))
-        if not number.is_finite() or not minimum <= number <= maximum:
-            raise ValueError("Price out of range")
-        return number.quantize(decimal.Decimal('0.01'), rounding=decimal.ROUND_HALF_UP)
-    except decimal.InvalidOperation:
-        raise ValueError("Expected a price")
+def money_value(value, minimum=0, maximum=1000000):
+    """Whole-rupee money input: integers only, with no floats or fractions."""
+    if isinstance(value, bool):
+        raise ValueError("Expected a whole rupee amount")
+    if isinstance(value, int):
+        number = value
+    elif isinstance(value, str):
+        text = value.strip()
+        if not re.fullmatch(r"[0-9]{1,7}", text):
+            raise ValueError("Expected a whole rupee amount")
+        number = int(text)
+    else:
+        raise ValueError("Expected a whole rupee amount")
+    if not minimum <= number <= maximum:
+        raise ValueError("Amount out of range")
+    return number
 
 
 def raise_if_errors(errors):

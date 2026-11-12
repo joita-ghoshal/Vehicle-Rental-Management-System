@@ -3,8 +3,8 @@ export function money(value) {
     style: 'currency',
     currency: 'INR',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(Number(value) || 0)
+    maximumFractionDigits: 0,
+  }).format(Math.trunc(Number(value) || 0))
 }
 
 // Dates arrive as "YYYY-MM-DD" (or an ISO timestamp). Read them without time-zone shifts.
