@@ -244,7 +244,6 @@ Vehicle-Rental-Management-System/
 │   └── sample_data.sql
 │
 ├── README.md
-├── SETUP.md
 └── .gitignore
 ```
 
@@ -318,8 +317,6 @@ Vehicle-Rental-Management-System/
 ├── backend/
 ├── database/
 ├── README.md
-├── SETUP.md
-├── step.md
 └── .gitignore
 ```
 
@@ -646,9 +643,9 @@ ZELVORA uses Python's built-in HTTP server for backend API handling.
 
 This architecture is suitable for local academic demonstrations and educational development.
 
-For public production deployment, additional server infrastructure, HTTPS, stronger security controls, and deployment configuration are required. Phase 7 adds a single-origin Docker/Render setup, production cookie/CORS/session settings, migrations and environment documentation; see **[`DEPLOYMENT.md`](DEPLOYMENT.md)**.
+For public production deployment, additional server infrastructure, HTTPS, stronger security controls, and deployment configuration are required. Phase 7 adds a single-origin Docker/Render setup, production cookie/CORS/session settings, migrations and environment documentation; see the production deployment section below and the tracked `render.yaml`, `Dockerfile`, and `.env.example` files.
 
-For environment-specific configuration and troubleshooting, refer to `SETUP.md`.
+For environment-specific configuration and troubleshooting, refer to the local development notes in this README and `backend/.env.example`.
 
 ---
 
@@ -669,7 +666,7 @@ React/Python/MySQL stack:
 - **No secrets in Git:** only `.env.example` files are tracked.
 
 Exact limits, trade-offs, environment variables, deployment steps and rollback are documented in
-**[`DEPLOYMENT.md`](DEPLOYMENT.md)**. Nothing is deployed by the repository itself; Phase 8 requires
+`render.yaml`, `Dockerfile`, `backend/.env.example` and the deployment section above. Nothing is deployed by the repository itself; Phase 8 requires
 owner-provided hosting access and explicit approval.
 
 ---
@@ -735,9 +732,7 @@ The project covers the following testing areas:
 
 ZELVORA was organized using a structured, phase-wise development approach.
 
-The development roadmap and implementation records are maintained in:
-
-**[`step.md`](step.md)**
+The development roadmap and implementation records are maintained locally in `step.md` (kept out of the public repository) and summarised in this README.
 
 The documentation includes:
 
@@ -769,7 +764,7 @@ The project includes basic security practices such as:
 
 The application uses Python's built-in HTTP server. It is **not a hardened production server**; Phase 7
 provides a single-origin deployment configuration for this academic demo, with HTTPS, security headers and
-persistent sessions documented in **[`DEPLOYMENT.md`](DEPLOYMENT.md)**. A production-grade server, monitoring
+persistent sessions documented in the production deployment section of this README. A production-grade server, monitoring
 and stronger controls remain later work.
 
 ---
